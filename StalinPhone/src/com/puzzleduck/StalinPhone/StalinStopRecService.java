@@ -29,19 +29,17 @@ public class StalinStopRecService extends Service {
     public void onCreate() {
     	Log.d("StalinPhone ::: ", "starting stop-rec service...");
         mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-
-        // show the icon in the status bar
         showNotification();
-
 //    	Log.d("StalinPhone ::: ", "show notification success");
 
-        // Start up the thread running the service.  Note that we create a
-        // separate thread because the service normally runs in the process's
-        // main thread, which we don't want to block.
-//        this.getApplicationContext().
         Thread thr = new Thread(null, mTask, "StalinTransService");
+        
+        //need to recover running thread here 
+        //Thread thr = 
+        
     	Log.d("StalinPhone ::: ", "starting stop-recording thread");
-            thr.start();
+
+        thr.start();
     }
 
     @Override
@@ -59,40 +57,16 @@ public class StalinStopRecService extends Service {
     Runnable mTask = new Runnable() {
         public void run() {
 
-//stuff
-//        	recorder.
 			Log.d("DEBUG", "STALINphone ::: Idle - pre-STOP REC ");
 			recorder.stop();
 			Log.d("DEBUG", "STALINphone ::: Idle - STOP REC ");
 			recorder.release();
 			Log.d("DEBUG", "STALINphone ::: stop self (rec thread)");
-				Log.d("StalinPhone ::: ", "recording service terminating...");
-			    
-			    StalinStopRecService.this.stopSelf();
+			StalinStopRecService.this.stopSelf();
         
         }
-    };
+    };//Runnable
 	
-	
-
-	
-	
-	
-	
-	
-	@Override
-	public IBinder onBind(Intent arg0) {
-		// TODO Auto-generated method stub
-		return mBinder;
-	}//ibinder
-
-	
-	
-
-	
-    /**
-     * Show a notification while this service is running.
-     */
     private void showNotification() {
         // In this sample, we'll use the same text for the ticker and the expanded notification
         CharSequence text = getText(R.string.stalin_rec_service_started);
@@ -112,7 +86,7 @@ public class StalinStopRecService extends Service {
         // Send the notification.
         // We use a layout id because it is a unique number.  We use it later to cancel.
         mNM.notify(R.string.stalin_rec_service_started, notification);
-    }
+    }//showNotification
 
     /**
      * This is the object that receives interactions from clients.  See RemoteService
@@ -124,7 +98,13 @@ public class StalinStopRecService extends Service {
 		        int flags) throws RemoteException {
             return super.onTransact(code, data, reply, flags);
         }
-    };
+    };//IBinder
 
 	
+	@Override
+	public IBinder onBind(Intent arg0) {
+		// TODO Auto-generated method stub
+		return mBinder;
+	}//ibinder
+
 }//clAss

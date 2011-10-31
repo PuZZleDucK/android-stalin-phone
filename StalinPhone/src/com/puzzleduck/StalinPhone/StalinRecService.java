@@ -21,27 +21,23 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class StalinRecService extends Service {
-
 	public MediaRecorder recorder = new MediaRecorder();
     private NotificationManager mNM;
 
     @Override
     public void onCreate() {
-    	Log.d("StalinPhone ::: ", "starting rec service...");
+    	Log.d("StalinPhone ::: ", "starting REC service...");
         mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-
         // show the icon in the status bar
         showNotification();
-
-//    	Log.d("StalinPhone ::: ", "show notification success");
 
         // Start up the thread running the service.  Note that we create a
         // separate thread because the service normally runs in the process's
         // main thread, which we don't want to block.
 //        this.getApplicationContext().
         Thread thr = new Thread(null, mTask, "StalinTransService");
-    	Log.d("StalinPhone ::: ", "starting recording thread");
-            thr.start();
+    	Log.d("StalinPhone ::: ", "starting REC service thread");
+        thr.start();
     }
 
     @Override
@@ -59,13 +55,6 @@ public class StalinRecService extends Service {
     Runnable mTask = new Runnable() {
         public void run() {
 
-
-//cant do this here?
-//    		Bundle extras = intent.getExtras();
-//			String state = extras.getString(TelephonyManager.EXTRA_STATE);
-        		
-				
-				//http://www.androidtutorials.org/
 				String mediaState = android.os.Environment
 						.getExternalStorageState();
 				if (!mediaState
@@ -80,26 +69,12 @@ public class StalinRecService extends Service {
 					}
 				}
 
-				// make sure the directory we plan to store the recording in exists
+				// make sure the directory we plan to store the recording in exists?!?!
 				//				  File directory = new File(path).getParentFile();
-//				File myNewFolder = new File(
-//						Environment.getExternalStorageDirectory()
-//								+ "StalinPhone");
 //				myNewFolder.mkdir();
 
-				//					Log.d("DEBUG", "STALINphone ::: proposed-directory: " + myNewFolder + "/rec01.3gp");
+				File directory = new File(Environment.getExternalStorageDirectory() + "/StalinPhone/rec"+System.currentTimeMillis()+".3gp");//.getParentFile();
 
-				File directory = new File(Environment.getExternalStorageDirectory() + "/StalinPhone/rec"+System.currentTimeMillis()+".mp4");//.getParentFile();
-				
-				//					Log.d("DEBUG", "STALINphone ::: directory: " + directory.getAbsolutePath());
-				//				  if (!directory.exists() && !directory.mkdirs()) {
-				//					  try {
-				//						throw new IOException("STALINphone ::: Path to file could not be created.");
-				//					} catch (IOException e) {
-				//						// TODO Auto-generated catch block
-				//						e.printStackTrace();
-				//					}
-				//				  }
 				Log.d("DEBUG", "STALINphone ::: directory: " + directory.getPath());
 				//					Log.d("DEBUG", "STALINphone ::: audio sources: " + MediaRecorder.getAudioSourceMax());
 				//					  recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_CALL);
@@ -107,19 +82,10 @@ public class StalinRecService extends Service {
 				Log.d("DEBUG",
 						"STALINphone ::: audio source set - MAX AMP: "
 								+ recorder.getMaxAmplitude());
-				recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+				recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
 				Log.d("DEBUG", "STALINphone ::: audio format set: ");
 				recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
 				Log.d("DEBUG", "STALINphone ::: audio encoder set: ");
-
-				//					ContentResolver contentResolver = new ContentResolver();
-				//					ContentValues values = new ContentValues(3);
-				//					values.put(MediaStore.MediaColumns.TITLE, SOME_NAME_HERE);
-
-				//					Uri base = MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
-				//					Uri newUri = contentResolver.insert(base, values);
-				//					String path = contentResolver.getDataFilePath(newUri);
-				//					ContentResolver.
 
 				recorder.setOutputFile( directory.getPath()  );
 				Log.d("DEBUG", "STALINphone ::: audio file set: " + directory.getPath());
@@ -136,33 +102,10 @@ public class StalinRecService extends Service {
 				}
 				recorder.start();
 				Log.d("DEBUG", "STALINphone ::: started: ");
-
 				//				String phoneNumber = extras
 				//						.getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
 
-        
-				
-				
-//MOVED TO STOP_REC_SERVICE				
-//	            // Normally we would look for the end of the call, but for now:
-//	            // just sleep for 30 seconds.
-//				long endTime = System.currentTimeMillis() + 15*1000;
-//	            while (System.currentTimeMillis() < endTime) {
-//	                synchronized (mBinder) {
-//	                    try {
-//	                        mBinder.wait(endTime - System.currentTimeMillis());
-//	                    } catch (Exception e) {
-//	                    }
-//	                }
-//	            }
-//	            //TelephonyManager.EXTRA_STATE
-
-//				Log.d("DEBUG", "STALINphone ::: get (public) state: " + StalinReceiver.state);
-//	            while (StalinReceiver.state == null) {
-//				}
-
 	            Log.d("DEBUG", "STALINphone ::: get (public) state: " + StalinReceiver.state);
-
 
 				long endTime = System.currentTimeMillis() + 15*1000;
 	            while (System.currentTimeMillis() < endTime) {
@@ -174,7 +117,11 @@ public class StalinRecService extends Service {
                 }
             }
 	            
-
+	            
+	            
+	            //hope i dont have to use any of this
+	            // v   v   v  v   v  v   v   v   v  v
+	            
 //				//trying wait instead.. not realy
 //	            try {
 //					this.wait();
@@ -183,7 +130,6 @@ public class StalinRecService extends Service {
 //					e.printStackTrace();
 //				}
 				
-	            
 	            //CLOSE... gets the timing right, but no recording :(
 //	            while (! StalinReceiver.state.equals("IDLE")) {
 //		            Log.d("DEBUG", "STALINphone ::: get (public) state: " + StalinReceiver.state);
@@ -196,12 +142,8 @@ public class StalinRecService extends Service {
 //						//	                }
 //					}
 					//				
-					//				
-					//				
-					//				
-					//				
-					//				
-					//        
+	
+				//        
 					//				 // Done with our work...  stop the service/recording!
 					//				recorder.stop();
 					//				Log.d("DEBUG", "STALINphone ::: Idle - STOP REC ");
@@ -212,17 +154,6 @@ public class StalinRecService extends Service {
 					//			    
 					//			    StalinRecService.this.stopSelf();
 
-	            	
-	            	// Done with our work...  stop the service/recording!
-//			Log.d("DEBUG", "STALINphone ::: about to end recording");
-//				recorder.stop();
-////				Log.d("DEBUG", "STALINphone ::: Idle - STOP REC ");
-//				recorder.release();
-//				Log.d("DEBUG", "STALINphone ::: stop self (rec thread)");
-//			    StalinRecService.this.stopSelf();
-
-
-        
         }
     };
 	

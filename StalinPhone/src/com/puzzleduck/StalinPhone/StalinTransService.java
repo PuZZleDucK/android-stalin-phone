@@ -13,22 +13,15 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class StalinTransService extends Service {
-
     NotificationManager mNM;
 
     @Override
     public void onCreate() {
     	Log.d("StalinPhone ::: ", "starting...");
         mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-
-        // show the icon in the status bar
         showNotification();
-
     	Log.d("StalinPhone ::: ", "show notification success");
 
-        // Start up the thread running the service.  Note that we create a
-        // separate thread because the service normally runs in the process's
-        // main thread, which we don't want to block.
         Thread thr = new Thread(null, mTask, "StalinTransService");
     	Log.d("StalinPhone ::: ", "starting thread");
             thr.start();
@@ -38,8 +31,6 @@ public class StalinTransService extends Service {
     public void onDestroy() {
         // Cancel the notification -- we use the same ID that we had used to start it
         mNM.cancel(R.string.stalin_trans_service_started);
-
-        // Tell the user we stopped.
         Toast.makeText(this, R.string.stalin_trans_service_stopped, Toast.LENGTH_SHORT).show();
     }
 
@@ -60,33 +51,12 @@ public class StalinTransService extends Service {
                 }
             }
 
-            
-            
-            
-            			
             // Done with our work...  stop the service!
         	Log.d("StalinPhone ::: ", "service terminated...");
             
             StalinTransService.this.stopSelf();
         }
     };
-	
-	
-	
-	
-	
-	
-	
-	
-	@Override
-	public IBinder onBind(Intent arg0) {
-		// TODO Auto-generated method stub
-		return mBinder;
-	}//ibinder
-
-	
-	
-
 	
     /**
      * Show a notification while this service is running.
@@ -124,8 +94,10 @@ public class StalinTransService extends Service {
         }
     };
 
-	
-	
-	
+	@Override
+	public IBinder onBind(Intent arg0) {
+		// TODO Auto-generated method stub
+		return mBinder;
+	}//ibinder
 	
 }//clAss
