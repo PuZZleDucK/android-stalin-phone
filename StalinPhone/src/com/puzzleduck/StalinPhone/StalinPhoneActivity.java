@@ -36,20 +36,20 @@ public class StalinPhoneActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
         Log.d("StalinPhone ::: ", "button clicked: id" + v.getId());
       //work out action needed and start/kill service
-        if(v.getId() == R.id.start_stalin_rec_service)
-        {
-            Log.d("StalinPhone ::: ", "creating REC intent");
-            mTransRequestSender = PendingIntent.getService(StalinPhoneActivity.this,
-            		0, new Intent(StalinPhoneActivity.this, StalinRecService.class), 0);
-
-            Log.d("StalinPhone ::: ", "REC intent created");
-            try {
-    			mTransRequestSender.send();
-    		} catch (CanceledException e) {
-    			// TODO Auto-generated catch block
-    			e.printStackTrace();
-    		}        
-        }
+//        if(v.getId() == R.id.start_stalin_rec_service)
+////        {
+////            Log.d("StalinPhone ::: ", "creating REC intent");
+////            mTransRequestSender = PendingIntent.getService(StalinPhoneActivity.this,
+////            		0, new Intent(StalinPhoneActivity.this, StalinRecService.class), 0);
+////
+////            Log.d("StalinPhone ::: ", "REC intent created");
+////            try {
+////    			mTransRequestSender.send();
+////    		} catch (CanceledException e) {
+////    			// TODO Auto-generated catch block
+////    			e.printStackTrace();
+////    		}        
+//        }
         if(v.getId() == R.id.stop_stalin_rec_service)
         {
             Log.d("StalinPhone ::: ", "creating stop-REC intent");

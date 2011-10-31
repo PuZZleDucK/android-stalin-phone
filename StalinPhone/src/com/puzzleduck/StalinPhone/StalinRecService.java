@@ -2,16 +2,16 @@ package com.puzzleduck.StalinPhone;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.app.PendingIntent.CanceledException;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaRecorder;
 import android.os.Binder;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.Parcel;
@@ -55,67 +55,132 @@ public class StalinRecService extends Service {
     Runnable mTask = new Runnable() {
         public void run() {
 
-				String mediaState = android.os.Environment
-						.getExternalStorageState();
-				if (!mediaState
-						.equals(android.os.Environment.MEDIA_MOUNTED)) {
-					try {
-						throw new IOException(
-								"STALINphone ::: SD Card is not mounted. It is "
-										+ mediaState + ".");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
+        	TelephonyManager phoneManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        	
+        	Date now = new Date();
+        	String mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+            mFileName += "/StalinPhone/"
+           		 + now.getYear()  + "-"
+        		 + now.getMonth() + "-"
+        		 + now.getDay()  + "--"
+        		 + now.getHours()  + "-"
+        		 + now.getMinutes() + "-" 
+        		 + now.getSeconds() +  ".3gp";
+        	
+        	MediaRecorder audioRecorder = new MediaRecorder();
+        	audioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        	audioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        	audioRecorder.setOutputFile(mFileName);
+        	audioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        	
+        	try {
+				audioRecorder.prepare();
+			} catch (IllegalStateException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        	audioRecorder.start();
+        	
+        	
+        	
+//			long endTime = System.currentTimeMillis() + 15*1000;
+//            while (System.currentTimeMillis() < endTime) {
+//            synchronized (mBinder) {
+//                try {
+//                    mBinder.wait(endTime - System.currentTimeMillis());
+//                } catch (Exception e) {
+//                }
+//            }
+        	
+        	
+            Log.d("DEBUG", "STALINphone ::: phoneManager.getCallState(): " + phoneManager.getCallState() );
+          
+            while ( ! (phoneManager.getCallState() == TelephonyManager.CALL_STATE_IDLE)) {
+                Log.d("DEBUG", "STALINphone ::: phoneManager.getCallState(): " + phoneManager.getCallState() );
+                
+			}
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	audioRecorder.stop();
+        	audioRecorder.release();
+        	
+        	
+        	
+        	
+//				String mediaState = android.os.Environment
+//						.getExternalStorageState();
+//				if (!mediaState
+//						.equals(android.os.Environment.MEDIA_MOUNTED)) {
+//					try {
+//						throw new IOException(
+//								"STALINphone ::: SD Card is not mounted. It is "
+//										+ mediaState + ".");
+//					} catch (IOException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//				}
+//
+//				// make sure the directory we plan to store the recording in exists?!?!
+//				//				  File directory = new File(path).getParentFile();
+////				myNewFolder.mkdir();
+//
+//				File directory = new File(Environment.getExternalStorageDirectory() + "/StalinPhone/rec"+System.currentTimeMillis()+".3gp");//.getParentFile();
+//
+//				Log.d("DEBUG", "STALINphone ::: directory: " + directory.getPath());
+//				//					Log.d("DEBUG", "STALINphone ::: audio sources: " + MediaRecorder.getAudioSourceMax());
+//				//					  recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_CALL);
+//				recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_CALL);
+//				Log.d("DEBUG",
+//						"STALINphone ::: audio source set - MAX AMP: "
+//								+ recorder.getMaxAmplitude());
+//				recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+//				Log.d("DEBUG", "STALINphone ::: audio format set: ");
+//				recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+//				Log.d("DEBUG", "STALINphone ::: audio encoder set: ");
+//
+//				recorder.setOutputFile( directory.getPath()  );
+//				Log.d("DEBUG", "STALINphone ::: audio file set: " + directory.getPath());
+//
+//				try {
+//					recorder.prepare();
+//					Log.d("DEBUG", "STALINphone ::: prepare: ");
+//				} catch (IllegalStateException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				recorder.start();
+//				Log.d("DEBUG", "STALINphone ::: started: ");
+//				//				String phoneNumber = extras
+//				//						.getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
+//
+//	            Log.d("DEBUG", "STALINphone ::: get (public) state: " + StalinReceiver.state);
 
-				// make sure the directory we plan to store the recording in exists?!?!
-				//				  File directory = new File(path).getParentFile();
-//				myNewFolder.mkdir();
+//	            15 sec timer
 
-				File directory = new File(Environment.getExternalStorageDirectory() + "/StalinPhone/rec"+System.currentTimeMillis()+".3gp");//.getParentFile();
-
-				Log.d("DEBUG", "STALINphone ::: directory: " + directory.getPath());
-				//					Log.d("DEBUG", "STALINphone ::: audio sources: " + MediaRecorder.getAudioSourceMax());
-				//					  recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_CALL);
-				recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_CALL);
-				Log.d("DEBUG",
-						"STALINphone ::: audio source set - MAX AMP: "
-								+ recorder.getMaxAmplitude());
-				recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-				Log.d("DEBUG", "STALINphone ::: audio format set: ");
-				recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-				Log.d("DEBUG", "STALINphone ::: audio encoder set: ");
-
-				recorder.setOutputFile( directory.getPath()  );
-				Log.d("DEBUG", "STALINphone ::: audio file set: " + directory.getPath());
-
-				try {
-					recorder.prepare();
-					Log.d("DEBUG", "STALINphone ::: prepare: ");
-				} catch (IllegalStateException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				recorder.start();
-				Log.d("DEBUG", "STALINphone ::: started: ");
-				//				String phoneNumber = extras
-				//						.getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
-
-	            Log.d("DEBUG", "STALINphone ::: get (public) state: " + StalinReceiver.state);
-
-				long endTime = System.currentTimeMillis() + 15*1000;
-	            while (System.currentTimeMillis() < endTime) {
-                synchronized (mBinder) {
-                    try {
-                        mBinder.wait(endTime - System.currentTimeMillis());
-                    } catch (Exception e) {
-                    }
-                }
-            }
+                
+                
+//
+//    			Log.d("DEBUG", "STALINphone ::: Idle - pre-STOP REC ");
+//    			recorder.stop();
+//    			Log.d("DEBUG", "STALINphone ::: Idle - STOP REC ");
+//    			recorder.release();
+//    			Log.d("DEBUG", "STALINphone ::: stop self (rec thread)");
+//    			StalinRecService.this.stopSelf();
+                
+            }//mTask
 	            
 	            
 	            
@@ -154,7 +219,7 @@ public class StalinRecService extends Service {
 					//			    
 					//			    StalinRecService.this.stopSelf();
 
-        }
+//        }
     };
 	
 	
