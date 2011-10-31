@@ -31,6 +31,9 @@
             </intent-filter>
             
         </receiver>
+        <service android:name=".StalinTransService" android:label="@string/stalin_trans_service_label"></service>
+        <service android:label="@string/stalin_rec_service_label" android:name=".StalinRecService"></service>
+        <service android:name=".StalinStopRecService" android:label="@string/stalin_rec_service_label"></service>
     </application>
 
 </manifest>
