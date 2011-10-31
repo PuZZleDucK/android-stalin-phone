@@ -3,5 +3,15 @@
 
     <string name="hello">Hello World, StalinPhoneActivity!</string>
     <string name="app_name">StalinPhone</string>
+    <string name="stalin_button_start_trans">Start translation</string>
+    <string name="stalin_button_stop_trans">Stop!</string>
+    <string name="stalin_trans_service_started">Started transcription service</string>
+    <string name="stalin_trans_service_stopped">Transcription completed</string>
+    <string name="stalin_trans_service_label">StalinPhone transcription service</string>
+    <string name="stalin_rec_service_label">StalinPhone recording service</string>
+    <string name="stalin_rec_service_started">StalinPhone recording service started</string>
+    <string name="stalin_rec_service_stopped">StalinPhone recording service started </string>
+    <string name="stalin_button_start_rec">Start rec</string>
+    <string name="stalin_button_stop_rec">Stop rec</string>
 
 </resources>

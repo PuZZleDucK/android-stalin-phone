@@ -8,5 +8,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/hello" />
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/stalin_button_start_trans" android:id="@+id/start_stalin_trans_service"></Button>
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/stop_stalin_trans_service" android:text="@string/stalin_button_stop_trans"></Button>
+    <Button android:layout_width="wrap_content" android:id="@+id/start_stalin_rec_service" android:layout_height="wrap_content" android:text="@string/stalin_button_start_rec"></Button>
+    <Button android:layout_width="wrap_content" android:id="@+id/stop_stalin_rec_service" android:layout_height="wrap_content" android:text="@string/stalin_button_stop_rec"></Button>
 
 </LinearLayout>
