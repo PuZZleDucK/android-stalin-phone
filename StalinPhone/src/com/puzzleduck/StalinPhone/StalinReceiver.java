@@ -12,7 +12,7 @@ import android.util.Log;
 public class StalinReceiver extends BroadcastReceiver{
  
 
-    private PendingIntent mTransRequestSender;
+//    private PendingIntent mTransRequestSender;
     public static String state;
 	@Override
 	public void onReceive(Context context, Intent intent) {

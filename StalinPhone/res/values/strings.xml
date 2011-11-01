@@ -13,5 +13,6 @@
     <string name="stalin_rec_service_stopped">StalinPhone recording service started </string>
     <string name="stalin_button_start_rec">Start rec</string>
     <string name="stalin_button_stop_rec">Stop rec</string>
+    <string name="stalin_otherrec_service_label">StalinPhone second recording service</string>
 
 </resources>

@@ -51,7 +51,7 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
 
 	@Override
 	public void onClick(View v) {
-//        Log.d("StalinPhone ::: ", "button clicked: id" + v.getId());
+        Log.d("StalinPhone ::: ", "button clicked: id" + v.getId());
 		
 		
 		
@@ -110,9 +110,9 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
         	recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 //        	Intent recognizerIntent = new Intent(RecognizerIntent.ACTION_WEB_SEARCH);
 //        	Log.d("StalinPhone ::: ", "TRANS Recog intent created");
-        	PackageManager pm = getPackageManager();
+//        	PackageManager pm = getPackageManager();
 //        	Log.d("StalinPhone ::: ", "TRANS packages got");
-        	List <ResolveInfo> activities = pm.queryIntentActivities(recognizerIntent, 0);
+//        	List <ResolveInfo> activities = pm.queryIntentActivities(recognizerIntent, 0);
 //        	Log.d("StalinPhone ::: ", "TRANS activities: " + activities.size());
 //            	Log.d("StalinPhone ::: ", "TRANS activities: " + activities.toString());
         	
