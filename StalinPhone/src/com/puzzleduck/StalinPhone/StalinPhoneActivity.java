@@ -24,10 +24,10 @@ public class StalinPhoneActivity extends Activity implements OnClickListener {
         findViewById(R.id.start_stalin_trans_service).setOnClickListener( (OnClickListener) this);
         findViewById(R.id.stop_stalin_trans_service).setOnClickListener( (OnClickListener) this);
         Log.d("StalinPhone ::: ", "trans buttons set up");
-        findViewById(R.id.start_stalin_rec_service).setOnClickListener( (OnClickListener) this);
-        findViewById(R.id.stop_stalin_rec_service).setOnClickListener( (OnClickListener) this);
+//        findViewById(R.id.start_stalin_rec_service).setOnClickListener( (OnClickListener) this);
+//        findViewById(R.id.stop_stalin_rec_service).setOnClickListener( (OnClickListener) this);
         Log.d("StalinPhone ::: ", "rec buttons set up");
-
+//icon is Stalin Jamming from uncyclopedia :] thanks sock puppet
     } 
 
     private PendingIntent mTransRequestSender;
@@ -52,22 +52,33 @@ public class StalinPhoneActivity extends Activity implements OnClickListener {
 //        }
         if(v.getId() == R.id.stop_stalin_rec_service)
         {
-            Log.d("StalinPhone ::: ", "creating stop-REC intent");
+//            Log.d("StalinPhone ::: ", "creating stop-REC intent");
+//            mTransRequestSender = PendingIntent.getService(StalinPhoneActivity.this,
+//            		0, new Intent(StalinPhoneActivity.this, StalinStopRecService.class), 0);
+//
+//            Log.d("StalinPhone ::: ", "stop-REC intent created");
+//            try {
+//    			mTransRequestSender.send();
+//    		} catch (CanceledException e) {
+//    			// TODO Auto-generated catch block
+//    			e.printStackTrace();
+//    		}
+        }
+        if(v.getId() == R.id.start_stalin_trans_service)
+        {
+            Log.d("StalinPhone ::: ", "button clicked: start t");
+//            Log.d("StalinPhone ::: ", "creating intent");
+            Log.d("StalinPhone ::: ", "creating TRANS intent");
             mTransRequestSender = PendingIntent.getService(StalinPhoneActivity.this,
-            		0, new Intent(StalinPhoneActivity.this, StalinStopRecService.class), 0);
+            		0, new Intent(StalinPhoneActivity.this, StalinTransService.class), 0);
 
-            Log.d("StalinPhone ::: ", "stop-REC intent created");
+            Log.d("StalinPhone ::: ", "trans intent created");
             try {
     			mTransRequestSender.send();
     		} catch (CanceledException e) {
     			// TODO Auto-generated catch block
     			e.printStackTrace();
     		}
-        }
-        if(v.getId() == R.id.start_stalin_trans_service)
-        {
-            Log.d("StalinPhone ::: ", "button clicked: start t");
-//            Log.d("StalinPhone ::: ", "creating intent");
         }
         if(v.getId() == R.id.stop_stalin_trans_service)
         {
