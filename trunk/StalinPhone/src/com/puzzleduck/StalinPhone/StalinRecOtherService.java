@@ -19,34 +19,34 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
-public class StalinRecService extends Service {
+public class StalinRecOtherService extends Service {
 //	private MediaRecorder myRecorder;
 //	public MediaRecorder otherRecorder;
     private NotificationManager mNM;
-    public static Date now;
+
     @Override
     public void onCreate() {
-    	Log.d("StalinPhone ::: ", "starting REC service...");
-        mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        // show the icon in the status bar
-        showNotification();
+    	Log.d("StalinPhone ::: ", "starting otherREC service...");
+//        mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+//        // show the icon in the status bar
+//        showNotification();
 
         // Start up the thread running the service.  Note that we create a
         // separate thread because the service normally runs in the process's
         // main thread, which we don't want to block.
 
-        Thread thr = new Thread(null, mTask, "StalinRecService");
-    	Log.d("StalinPhone ::: ", "starting REC service thread");
+        Thread thr = new Thread(null, mTask, "StalinRecOtherService");
+    	Log.d("StalinPhone ::: ", "starting RECother service thread");
         thr.start();
     }
 
     @Override
     public void onDestroy() {
         // Cancel the notification -- we use the same ID that we had used to start it
-        mNM.cancel(R.string.stalin_rec_service_started);
+//        mNM.cancel(R.string.stalin_rec_service_started);
 
         // Tell the user we stopped.
-        Toast.makeText(this, R.string.stalin_rec_service_stopped, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, R.string.stalin_rec_service_stopped, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -57,10 +57,10 @@ public class StalinRecService extends Service {
 
         	TelephonyManager phoneManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         	
-        	StalinRecService.now = new Date();
-        	String myFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-//        	String otherFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-            myFileName += "/StalinPhone/me-"
+//        	Date now = new Date();
+//        	String myFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+        	String otherFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+        	otherFileName += "/StalinPhone/other-"
               		 + (StalinRecService.now.getYear() + 1900)  + "-"
            		 + StalinRecService.now.getMonth() + "-"
            		 + StalinRecService.now.getDay()  + "--"
@@ -75,22 +75,23 @@ public class StalinRecService extends Service {
 //           		 + now.getMinutes() + "-" 
 //           		 + now.getSeconds() +  ".3gp";
 
-            Log.d("DEBUG", "STALINphone ::: creating myAudioRecorder for:" + myFileName );
-        	MediaRecorder myAudioRecorder = new MediaRecorder();
-        	myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        	myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        	myAudioRecorder.setOutputFile(myFileName);
-        	myAudioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            Log.d("DEBUG", "STALINphone ::: creating otherAudioRecorder" );
+//        	MediaRecorder myAudioRecorder = new MediaRecorder();
+//        	myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+//        	myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+//        	myAudioRecorder.setOutputFile(myFileName);
+//        	myAudioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
 //            Log.d("DEBUG", "STALINphone ::: creating otherAudioRecorder" );
-//        	MediaRecorder otherAudioRecorder = new MediaRecorder();
-//        	otherAudioRecorder.setAudioSource(MediaRecorder.AudioSource.VOICE_DOWNLINK);
-//        	otherAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-//        	otherAudioRecorder.setOutputFile(otherFileName);
-//        	otherAudioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        	MediaRecorder otherAudioRecorder = new MediaRecorder();
+        	otherAudioRecorder.setAudioSource(MediaRecorder.AudioSource.VOICE_DOWNLINK);
+        	otherAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        	otherAudioRecorder.setOutputFile(otherFileName);
+        	otherAudioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         	
         	try {
-				myAudioRecorder.prepare();
+//				myAudioRecorder.prepare();
+				otherAudioRecorder.prepare();
 			} catch (IllegalStateException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -99,13 +100,13 @@ public class StalinRecService extends Service {
 				e1.printStackTrace();
 			}
 
-            Log.d("DEBUG", "STALINphone ::: about to start my rec" );
+//            Log.d("DEBUG", "STALINphone ::: about to start my rec" );
 
-        	myAudioRecorder.start();
+//        	myAudioRecorder.start();
         	
 //        	//only one rec allowed... damn
-//            Log.d("DEBUG", "STALINphone ::: about to start other rec" );
-//        	otherAudioRecorder.start();
+            Log.d("DEBUG", "STALINphone ::: about to start other rec" );
+        	otherAudioRecorder.start();
         	
         	
         	
@@ -122,10 +123,10 @@ public class StalinRecService extends Service {
         	int i= 0;
             while ( ! (phoneManager.getCallState() == TelephonyManager.CALL_STATE_IDLE)) {
             	i++;
-            	if(i==500)
+            	if(i==1000)
             	{
             		i=0; 
-            		Log.d("DEBUG", "STALINphone ::: phoneManager.getCallState(): " + phoneManager.getCallState() );
+            		Log.d("DEBUG", "STALINphone ::: other phoneManager.getCallState(): " + phoneManager.getCallState() );
                     
             		
             	}
@@ -139,11 +140,10 @@ public class StalinRecService extends Service {
         	
 
 
-        	myAudioRecorder.stop();
-            Log.d("DEBUG", "STALINphone ::: stopped my rec" );
-//        	otherAudioRecorder.stop();
-        	myAudioRecorder.release();
-//        	otherAudioRecorder.release();
+//        	myAudioRecorder.stop();
+        	otherAudioRecorder.stop();
+//        	myAudioRecorder.release();
+        	otherAudioRecorder.release();
         	
         	
         	
@@ -296,7 +296,7 @@ public class StalinRecService extends Service {
 
         // The PendingIntent to launch our activity if the user selects this notification
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, StalinRecService.class), 0);
+                new Intent(this, StalinRecOtherService.class), 0);
 
         // Set the info for the views that show in the notification panel.
         notification.setLatestEventInfo(this, getText(R.string.stalin_rec_service_label),
