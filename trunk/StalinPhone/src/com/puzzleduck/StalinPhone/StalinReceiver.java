@@ -29,14 +29,14 @@ public class StalinReceiver extends BroadcastReceiver{
 					//start recording
 
 
-				    PendingIntent mTransRequestSender;
+				    PendingIntent recRequestSender;
 
 		            Log.d("StalinPhone ::: ", "creating REC intent");
-		            mTransRequestSender = PendingIntent.getService(context,0, new Intent(context, StalinRecService.class), 0);
+		            recRequestSender = PendingIntent.getService(context,0, new Intent(context, StalinRecService.class), 0);
 
 		            Log.d("StalinPhone ::: ", "REC intent created");
 		            try {
-		    			mTransRequestSender.send();
+		            	recRequestSender.send();
 			            Log.d("StalinPhone ::: ", "REC intent sent");
 		    		} catch (CanceledException e) {
 		    			// TODO Auto-generated catch block

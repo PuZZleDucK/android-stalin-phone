@@ -34,7 +34,7 @@ public class StalinRecService extends Service {
         // Start up the thread running the service.  Note that we create a
         // separate thread because the service normally runs in the process's
         // main thread, which we don't want to block.
-//        this.getApplicationContext().
+
         Thread thr = new Thread(null, mTask, "StalinTransService");
     	Log.d("StalinPhone ::: ", "starting REC service thread");
         thr.start();
