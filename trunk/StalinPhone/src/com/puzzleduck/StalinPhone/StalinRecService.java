@@ -60,7 +60,7 @@ public class StalinRecService extends Service {
         	Date now = new Date();
         	String mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
             mFileName += "/StalinPhone/"
-           		 + now.getYear()  + "-"
+           		 + (now.getYear() + 1900)  + "-"
         		 + now.getMonth() + "-"
         		 + now.getDay()  + "--"
         		 + now.getHours()  + "-"
@@ -227,7 +227,19 @@ public class StalinRecService extends Service {
 	
 	
 	
-	
+
+    /**
+     * This is the object that receives interactions from clients.  See RemoteService
+     * for a more complete example.
+     */
+    private final IBinder mBinder = new Binder() {
+        @Override
+		protected boolean onTransact(int code, Parcel data, Parcel reply,
+		        int flags) throws RemoteException {
+            return super.onTransact(code, data, reply, flags);
+        }
+    };
+
 	
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -262,18 +274,6 @@ public class StalinRecService extends Service {
         // We use a layout id because it is a unique number.  We use it later to cancel.
         mNM.notify(R.string.stalin_rec_service_started, notification);
     }
-
-    /**
-     * This is the object that receives interactions from clients.  See RemoteService
-     * for a more complete example.
-     */
-    private final IBinder mBinder = new Binder() {
-        @Override
-		protected boolean onTransact(int code, Parcel data, Parcel reply,
-		        int flags) throws RemoteException {
-            return super.onTransact(code, data, reply, flags);
-        }
-    };
 
 	
 }//clAss
