@@ -1,8 +1,14 @@
 package com.puzzleduck.StalinPhone;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.Runtime;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -32,8 +38,9 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-         
+
         findViewById(R.id.start_stalin_trans_service).setOnClickListener( (OnClickListener) this);
+        findViewById(R.id.start_su).setOnClickListener( (OnClickListener) this);
         Log.d("StalinPhone ::: ", "trans button set up");
 //icon is Stalin Jamming from uncyclopedia :] thanks sock puppet
     } 
@@ -43,8 +50,76 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
         Log.d("StalinPhone ::: ", "button clicked: id" + v.getId());
 		
 		
-		
+
       //work out action needed and start/kill service
+        if(v.getId() == R.id.start_su)
+        {
+        	
+    		EditText debugText = (EditText) findViewById(R.id.debugTranscription);
+    		debugText.append("Running command: " );
+          Log.d("StalinPhone ::: ", " StalinPhone REC/TESTING !!!!!!!!!!!!!StalinPhone !!!!: " );
+
+          
+          //public Process exec (String prog, String[] envp, File directory)
+          try {
+			Process myCommand = Runtime.getRuntime().exec("/system/xbin/ls", null, null );
+        	try {
+				Thread.sleep(100); //woot.... cant believe that worked :) sweet
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+    		debugText.append("Running cmd... output: " + myCommand.getInputStream().available());
+
+    		byte[] commandOut = new byte[myCommand.getInputStream().available()];
+    		myCommand.getInputStream().read(commandOut,0,myCommand.getInputStream().available());
+    		debugText.append( "\n\t Output: " + new String(commandOut) );	
+
+//    		
+//    		debugText.append("Running command-output: " + myCommand.getInputStream().read());
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+          
+          
+          
+          
+          
+          
+//          try {
+//			Process process = Runtime.getRuntime().exec("/system/bin/ls");
+//	          Log.d("StalinPhone ::: ", " create process" );
+//			  DataOutputStream os = new DataOutputStream(process.getOutputStream());
+//			  DataInputStream osRes = new DataInputStream(process.getInputStream());
+//	          Log.d("StalinPhone ::: ", " create streams" );
+//			  String commands[] = { "/system/bin/ls" };
+//	          Log.d("StalinPhone ::: ", " create commands" );
+//			for (String single : commands ) {
+//			     os.writeBytes(single + "\n");
+//		          Log.d("StalinPhone ::: ", " write" );
+//			     os.flush();
+//		          Log.d("StalinPhone ::: ", " flush" );
+////             res.add(osRes.readLine());
+//				debugText.append("|" + osRes.readLine() );
+//			  }
+//			  os.writeBytes("exit\n");
+//			  os.flush();
+//			  process.waitFor();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+
+
+    		
+    		
+    		
+        }
         if(v.getId() == R.id.start_stalin_trans_service)
         {
             Log.d("StalinPhone ::: ", "button clicked: start t");
