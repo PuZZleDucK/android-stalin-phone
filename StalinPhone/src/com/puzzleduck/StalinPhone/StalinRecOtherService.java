@@ -31,10 +31,6 @@ public class StalinRecOtherService extends Service {
 //        // show the icon in the status bar
 //        showNotification();
 
-        // Start up the thread running the service.  Note that we create a
-        // separate thread because the service normally runs in the process's
-        // main thread, which we don't want to block.
-
         Thread thr = new Thread(null, mTask, "StalinRecOtherService");
     	Log.d("StalinPhone ::: ", "starting RECother service thread");
         thr.start();

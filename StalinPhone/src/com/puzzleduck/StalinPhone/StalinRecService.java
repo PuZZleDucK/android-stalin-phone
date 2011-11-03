@@ -42,11 +42,6 @@ public class StalinRecService extends Service {
 
     @Override
     public void onDestroy() {
-        // Cancel the notification -- we use the same ID that we had used to start it
-        mNM.cancel(R.string.stalin_rec_service_started);
-
-        // Tell the user we stopped.
-        Toast.makeText(this, R.string.stalin_rec_service_stopped, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -59,7 +54,6 @@ public class StalinRecService extends Service {
         	
         	StalinRecService.now = new Date();
         	String myFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-//        	String otherFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
             myFileName += "/StalinPhone/me-"
               		 + (StalinRecService.now.getYear() + 1900)  + "-"
            		 + StalinRecService.now.getMonth() + "-"
@@ -67,27 +61,13 @@ public class StalinRecService extends Service {
            		 + StalinRecService.now.getHours()  + "-"
            		 + StalinRecService.now.getMinutes() + "-" 
            		 + StalinRecService.now.getSeconds() +  ".3gp";
-//            otherFileName += "/StalinPhone/other-"
-//              		 + (now.getYear() + 1900)  + "-"
-//           		 + now.getMonth() + "-"
-//           		 + now.getDay()  + "--"
-//           		 + now.getHours()  + "-"
-//           		 + now.getMinutes() + "-" 
-//           		 + now.getSeconds() +  ".3gp";
 
             Log.d("DEBUG", "STALINphone ::: creating myAudioRecorder for:" + myFileName );
         	MediaRecorder myAudioRecorder = new MediaRecorder();
-        	myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        	myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);//only mic working
         	myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         	myAudioRecorder.setOutputFile(myFileName);
         	myAudioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
-//            Log.d("DEBUG", "STALINphone ::: creating otherAudioRecorder" );
-//        	MediaRecorder otherAudioRecorder = new MediaRecorder();
-//        	otherAudioRecorder.setAudioSource(MediaRecorder.AudioSource.VOICE_DOWNLINK);
-//        	otherAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-//        	otherAudioRecorder.setOutputFile(otherFileName);
-//        	otherAudioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         	
         	try {
 				myAudioRecorder.prepare();
@@ -103,21 +83,6 @@ public class StalinRecService extends Service {
 
         	myAudioRecorder.start();
         	
-//        	//only one rec allowed... damn
-//            Log.d("DEBUG", "STALINphone ::: about to start other rec" );
-//        	otherAudioRecorder.start();
-        	
-        	
-        	
-//			long endTime = System.currentTimeMillis() + 15*1000;
-//            while (System.currentTimeMillis() < endTime) {
-//            synchronized (mBinder) {
-//                try {
-//                    mBinder.wait(endTime - System.currentTimeMillis());
-//                } catch (Exception e) {
-//                }
-//            }
-        	
         	
         	int i= 0;
             while ( ! (phoneManager.getCallState() == TelephonyManager.CALL_STATE_IDLE)) {
@@ -126,132 +91,24 @@ public class StalinRecService extends Service {
             	{
             		i=0; 
             		Log.d("DEBUG", "STALINphone ::: phoneManager.getCallState(): " + phoneManager.getCallState() );
-                    
-            		
-            	}
-                
+            	} 
 			}
         	
-        	
-        	
-        	
-        	
-        	
-
-
         	myAudioRecorder.stop();
             Log.d("DEBUG", "STALINphone ::: stopped my rec" );
-//        	otherAudioRecorder.stop();
         	myAudioRecorder.release();
-//        	otherAudioRecorder.release();
         	
-        	
-        	
-        	
-//				String mediaState = android.os.Environment
-//						.getExternalStorageState();
-//				if (!mediaState
-//						.equals(android.os.Environment.MEDIA_MOUNTED)) {
-//					try {
-//						throw new IOException(
-//								"STALINphone ::: SD Card is not mounted. It is "
-//										+ mediaState + ".");
-//					} catch (IOException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//				}
-//
-//				// make sure the directory we plan to store the recording in exists?!?!
-//				//				  File directory = new File(path).getParentFile();
-////				myNewFolder.mkdir();
-//
-//				File directory = new File(Environment.getExternalStorageDirectory() + "/StalinPhone/rec"+System.currentTimeMillis()+".3gp");//.getParentFile();
-//
-//				Log.d("DEBUG", "STALINphone ::: directory: " + directory.getPath());
-//				//					Log.d("DEBUG", "STALINphone ::: audio sources: " + MediaRecorder.getAudioSourceMax());
-//				//					  recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_CALL);
-//				recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_CALL);
-//				Log.d("DEBUG",
-//						"STALINphone ::: audio source set - MAX AMP: "
-//								+ recorder.getMaxAmplitude());
-//				recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-//				Log.d("DEBUG", "STALINphone ::: audio format set: ");
-//				recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-//				Log.d("DEBUG", "STALINphone ::: audio encoder set: ");
-//
-//				recorder.setOutputFile( directory.getPath()  );
-//				Log.d("DEBUG", "STALINphone ::: audio file set: " + directory.getPath());
-//
-//				try {
-//					recorder.prepare();
-//					Log.d("DEBUG", "STALINphone ::: prepare: ");
-//				} catch (IllegalStateException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//				recorder.start();
-//				Log.d("DEBUG", "STALINphone ::: started: ");
-//				//				String phoneNumber = extras
-//				//						.getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
-//
-//	            Log.d("DEBUG", "STALINphone ::: get (public) state: " + StalinReceiver.state);
 
-//	            15 sec timer
+            // Cancel the notification -- we use the same ID that we had used to start it
+            mNM.cancel(R.string.stalin_rec_service_started);
 
-                
-                
-//
-//    			Log.d("DEBUG", "STALINphone ::: Idle - pre-STOP REC ");
-//    			recorder.stop();
-//    			Log.d("DEBUG", "STALINphone ::: Idle - STOP REC ");
-//    			recorder.release();
-//    			Log.d("DEBUG", "STALINphone ::: stop self (rec thread)");
-//    			StalinRecService.this.stopSelf();
+            // Tell the user we stopped.
+//            Toast.makeText(this, R.string.stalin_rec_service_stopped, Toast.LENGTH_SHORT).show();
+        	
+    			StalinRecService.this.stopSelf();
                 
             }//mTask
 	            
-	            
-	            
-	            //hope i dont have to use any of this
-	            // v   v   v  v   v  v   v   v   v  v
-	            
-//				//trying wait instead.. not realy
-//	            try {
-//					this.wait();
-//				} catch (InterruptedException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-				
-	            //CLOSE... gets the timing right, but no recording :(
-//	            while (! StalinReceiver.state.equals("IDLE")) {
-//		            Log.d("DEBUG", "STALINphone ::: get (public) state: " + StalinReceiver.state);
-//						//.getIntent().getExtras().getString(TelephonyManager.EXTRA_STATE).equals("IDLE") ) {
-//						//	                synchronized (mBinder) {
-//						//	                    try {
-//						////	                        mBinder.wait(endTime - System.currentTimeMillis());
-//						//	                    } catch (Exception e) {
-//						//	                    }
-//						//	                }
-//					}
-					//				
-	
-				//        
-					//				 // Done with our work...  stop the service/recording!
-					//				recorder.stop();
-					//				Log.d("DEBUG", "STALINphone ::: Idle - STOP REC ");
-					//				recorder.release();
-					//				Log.d("DEBUG", "STALINphone ::: Idle - RELEASE REC ");
-					//
-					//				Log.d("StalinPhone ::: ", "recording service terminating...");
-					//			    
-					//			    StalinRecService.this.stopSelf();
-
-//        }
     };
 	
 	
