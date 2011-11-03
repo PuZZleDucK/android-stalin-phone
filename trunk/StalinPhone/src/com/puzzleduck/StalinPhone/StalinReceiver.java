@@ -11,8 +11,6 @@ import android.util.Log;
 
 public class StalinReceiver extends BroadcastReceiver{
  
-
-//    private PendingIntent mTransRequestSender;
     public static String state;
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -27,8 +25,6 @@ public class StalinReceiver extends BroadcastReceiver{
 				if (state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
 					Log.d("DEBUG", "STALINphone ::: Off the Hook - START REC ");
 					//start recording
-
-
 				    PendingIntent recRequestSender;
 
 		            Log.d("StalinPhone ::: ", "creating REC intent");
