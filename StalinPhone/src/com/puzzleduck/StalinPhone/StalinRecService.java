@@ -54,7 +54,7 @@ public class StalinRecService extends Service {
         	
         	StalinRecService.now = new Date();
         	String myFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-            myFileName += "/StalinPhone/me-"
+            myFileName += "/StalinPhone/me-recog-"
               		 + (StalinRecService.now.getYear() + 1900)  + "-"
            		 + StalinRecService.now.getMonth() + "-"
            		 + StalinRecService.now.getDay()  + "--"
@@ -64,7 +64,7 @@ public class StalinRecService extends Service {
 
             Log.d("DEBUG", "STALINphone ::: creating myAudioRecorder for:" + myFileName );
         	MediaRecorder myAudioRecorder = new MediaRecorder();
-        	myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);//only mic working
+        	myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.VOICE_CALL);//only mic working
         	myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         	myAudioRecorder.setOutputFile(myFileName);
         	myAudioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);

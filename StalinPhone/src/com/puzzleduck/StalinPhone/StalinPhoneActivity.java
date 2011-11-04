@@ -90,137 +90,109 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
           
           
 
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
           
           
           
 
-      	Log.d("StalinPhone ::: ", "starting debug REC service...");
-      	NotificationManager mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-          // show the icon in the status bar
-        CharSequence text = getText(R.string.stalin_rec_service_started);
-        Notification notification = new Notification(R.drawable.icon, text,
-                System.currentTimeMillis());
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, StalinRecService.class), 0);
-        notification.setLatestEventInfo(this, getText(R.string.stalin_rec_service_label),
-                       text, contentIntent);
-
-        // Send the notification.
-        // We use a layout id because it is a unique number.  We use it later to cancel.
-        mNM.notify(R.string.stalin_rec_service_started, notification);
-          
-      	TelephonyManager phoneManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-      	
-      	StalinRecService.now = new Date();
-      	String myFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-          myFileName += "/StalinPhone/me-"
-            		 + (StalinRecService.now.getYear() + 1900)  + "-"
-         		 + StalinRecService.now.getMonth() + "-"
-         		 + StalinRecService.now.getDay()  + "--"
-         		 + StalinRecService.now.getHours()  + "-"
-         		 + StalinRecService.now.getMinutes() + "-" 
-         		 + StalinRecService.now.getSeconds() +  ".3gp";
-
-        File thisFile = new File( myFileName );
-        Log.d("DEBUG", "STALINphone ::: path:" + thisFile.getParent() );
-        new File(thisFile.getParent()).mkdirs(); 
-
-          Log.d("DEBUG", "STALINphone ::: creating myAudioRecorder for:" + myFileName );
-      	MediaRecorder myAudioRecorder = new MediaRecorder();
-      	myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);//only mic working
-      	myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-      	myAudioRecorder.setOutputFile(myFileName);
-      	myAudioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-      	
-      	try {
-				myAudioRecorder.prepare();
-			} catch (IllegalStateException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-
-          Log.d("DEBUG", "STALINphone ::: about to start my rec" );
-
-      	myAudioRecorder.start();
-      	
-    	try {
-			Thread.sleep(8000);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-//      	int i= 0;
-//          while ( ! (phoneManager.getCallState() == TelephonyManager.CALL_STATE_IDLE)) {
-//          	i++;
-//          	if(i==500)
-//          	{
-//          		i=0; 
-//          		Log.d("DEBUG", "STALINphone ::: phoneManager.getCallState(): " + phoneManager.getCallState() );
-//          	} 
+//      	Log.d("StalinPhone ::: ", "starting debug REC service...");
+//      	NotificationManager mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+//          // show the icon in the status bar
+//        CharSequence text = getText(R.string.stalin_rec_service_started);
+//        Notification notification = new Notification(R.drawable.icon, text,
+//                System.currentTimeMillis());
+//        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+//                new Intent(this, StalinRecService.class), 0);
+//        notification.setLatestEventInfo(this, getText(R.string.stalin_rec_service_label),
+//                       text, contentIntent);
+//
+//        // Send the notification.
+//        // We use a layout id because it is a unique number.  We use it later to cancel.
+//        mNM.notify(R.string.stalin_rec_service_started, notification);
+//          
+//      	TelephonyManager phoneManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+//      	
+//      	StalinRecService.now = new Date();
+//      	String myFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+//          myFileName += "/StalinPhone/aTest-"
+//            		 + (StalinRecService.now.getYear() + 1900)  + "-"
+//         		 + StalinRecService.now.getMonth() + "-"
+//         		 + StalinRecService.now.getDay()  + "--"
+//         		 + StalinRecService.now.getHours()  + "-"
+//         		 + StalinRecService.now.getMinutes() + "-" 
+//         		 + StalinRecService.now.getSeconds() +  ".3gp";
+//
+//        File thisFile = new File( myFileName );
+//        Log.d("DEBUG", "STALINphone ::: path:" + thisFile.getParent() );
+//        new File(thisFile.getParent()).mkdirs(); 
+//
+//          Log.d("DEBUG", "STALINphone ::: creating myAudioRecorder for:" + myFileName );
+//      	MediaRecorder myAudioRecorder = new MediaRecorder();
+//      	myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.VOICE_UPLINK);//only mic working  
+//      	//cam records works like mike?
+//      	//default work
+//      	//mic..louder than cam?
+//      	//
+//      	//down...sounds like mic
+//      	//rec ... like mic
+//      	//uplink.. like mic
+//      	
+//      	
+//      	myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+//      	myAudioRecorder.setOutputFile(myFileName);
+//      	myAudioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+//      	
+//      	try {
+//				myAudioRecorder.prepare();
+//			} catch (IllegalStateException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			} catch (IOException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
 //			}
-      	
-      	myAudioRecorder.stop();
-          Log.d("DEBUG", "STALINphone ::: stopped my rec" );
-      	myAudioRecorder.release();
-      	
-
-          // Cancel the notification -- we use the same ID that we had used to start it
-          mNM.cancel(R.string.stalin_rec_service_started);
-
-          // Tell the user we stopped.
-//          Toast.makeText(this, R.string.stalin_rec_service_stopped, Toast.LENGTH_SHORT).show();
-      	
-//  			StalinRecService.this.stopSelf();
-             
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-//          try {
-//			Process process = Runtime.getRuntime().exec("/system/bin/ls");
-//	          Log.d("StalinPhone ::: ", " create process" );
-//			  DataOutputStream os = new DataOutputStream(process.getOutputStream());
-//			  DataInputStream osRes = new DataInputStream(process.getInputStream());
-//	          Log.d("StalinPhone ::: ", " create streams" );
-//			  String commands[] = { "/system/bin/ls" };
-//	          Log.d("StalinPhone ::: ", " create commands" );
-//			for (String single : commands ) {
-//			     os.writeBytes(single + "\n");
-//		          Log.d("StalinPhone ::: ", " write" );
-//			     os.flush();
-//		          Log.d("StalinPhone ::: ", " flush" );
-////             res.add(osRes.readLine());
-//				debugText.append("|" + osRes.readLine() );
-//			  }
-//			  os.writeBytes("exit\n");
-//			  os.flush();
-//			  process.waitFor();
-//		} catch (IOException e) {
+//
+//          Log.d("DEBUG", "STALINphone ::: about to start my rec" );
+//
+//      	myAudioRecorder.start();
+//      	
+//    	try {
+//			Thread.sleep(80000); // 8000 too short ... x 10 for long rec
+//		} catch (InterruptedException e1) {
 //			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
+//			e1.printStackTrace();
 //		}
-
-
-    		
-    		
-    		
+////      	int i= 0;
+////          while ( ! (phoneManager.getCallState() == TelephonyManager.CALL_STATE_IDLE)) {
+////          	i++;
+////          	if(i==500)
+////          	{
+////          		i=0; 
+////          		Log.d("DEBUG", "STALINphone ::: phoneManager.getCallState(): " + phoneManager.getCallState() );
+////          	} 
+////			}
+//      	
+//      	myAudioRecorder.stop();
+//          Log.d("DEBUG", "STALINphone ::: stopped my rec" );
+//      	myAudioRecorder.release();
+//      	
+//
+//          // Cancel the notification -- we use the same ID that we had used to start it
+//          mNM.cancel(R.string.stalin_rec_service_started);
         }
         if(v.getId() == R.id.start_stalin_trans_service)
         {
