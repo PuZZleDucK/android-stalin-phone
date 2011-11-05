@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -19,6 +21,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.media.AudioFormat;
+import android.media.AudioRecord;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Binder;
@@ -36,6 +40,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ToggleButton;
  
 public class StalinPhoneActivity extends Activity implements OnClickListener, RecognitionListener {
     
@@ -49,6 +54,7 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
 
         findViewById(R.id.start_stalin_trans_service).setOnClickListener( (OnClickListener) this);
         findViewById(R.id.start_su).setOnClickListener( (OnClickListener) this);
+        findViewById(R.id.toggleButton1).setOnClickListener( (OnClickListener) this);
         Log.d("StalinPhone ::: ", "trans button set up");
 //icon is Stalin Jamming from uncyclopedia :] thanks sock puppet
     } 
@@ -60,8 +66,10 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
 		
 
       //work out action needed and start/kill service
-        if(v.getId() == R.id.start_su)
+        if(v.getId() == R.id.toggleButton1)
         {
+        	
+        	
         	
     		EditText debugText = (EditText) findViewById(R.id.debugTranscription);
     		debugText.append("Running command: " );
@@ -69,7 +77,8 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
 
           
           //public Process exec (String prog, String[] envp, File directory)
-          try {
+          try 
+          {
 			Process myCommand = Runtime.getRuntime().exec("/system/xbin/ls", null, null );
         	try {
 				Thread.sleep(100); //woot.... cant believe that worked :) sweet
@@ -83,7 +92,8 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
     		myCommand.getInputStream().read(commandOut,0,myCommand.getInputStream().available());
     		debugText.append( "\n\t Output: " + new String(commandOut) );	
 
-		} catch (IOException e) {
+		} catch (IOException e) 
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -94,13 +104,106 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
 		
 		
 		
+			int sampleRate = 8000; //can be 44100, 22050, 11025, 8000
+//			4100Hz is currently the only rate that is guaranteed to work on all devices, 
+//			but other rates such as 22050, 16000, and 11025 may work on some devices.
+			
+//			See CHANNEL_IN_MONO and CHANNEL_IN_STEREO. CHANNEL_IN_MONO //hack: CHANNEL_CONFIGURATION_MONO
+			int audioChannel = AudioFormat.CHANNEL_CONFIGURATION_MONO;
+			//.CHANNEL_IN_BACK fail
+			//.CHANNEL_IN_BACK_PROCESSED fail
+			//default seemed to work
+			
+			//See ENCODING_PCM_16BIT and ENCODING_PCM_8BIT
+			int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
+			//default fail?
+			int minBufferSize = AudioRecord.getMinBufferSize(sampleRate, audioChannel, audioFormat);
+//	          Log.d("StalinPhone ::: ", " buffer size: " + minBufferSize);
+//			minBufferSize = 52000000;
+	          Log.d("StalinPhone ::: ", " buffer size: " + minBufferSize);
+			AudioRecord myRecorder = new AudioRecord(
+        		  MediaRecorder.AudioSource.VOICE_UPLINK, 
+        		  sampleRate,
+        		  audioChannel,
+        		  AudioFormat.ENCODING_DEFAULT,
+        		  minBufferSize);
+			
+			myRecorder.startRecording();
+          
+		
+			
+			
+      	StalinRecService.now = new Date();
+      	String myFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+          myFileName += "/StalinPhone/AaTest-"
+            		 + (StalinRecService.now.getYear() + 1900)  + "-"
+         		 + StalinRecService.now.getMonth() + "-"
+         		 + StalinRecService.now.getDay()  + "--"
+         		 + StalinRecService.now.getHours()  + "-"
+         		 + StalinRecService.now.getMinutes() + "-" 
+         		 + StalinRecService.now.getSeconds() +  ".raw";	
+			
+                byte data[] = new byte[minBufferSize];
+                FileOutputStream os = null;
+                try 
+                {
+                        os = new FileOutputStream(myFileName);
+                } catch (FileNotFoundException e) 
+                {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                }
+                ToggleButton recButton = (ToggleButton) findViewById(R.id.toggleButton1);
+                int read = 0;
+                if(null != os){
+                        while(recButton.isChecked()) //recording till button off?
+                        {  
+                                read = myRecorder.read(data, 0, minBufferSize);
+                                
+                                if(AudioRecord.ERROR_INVALID_OPERATION != read)
+                                {
+                                        try 
+                                        {
+                                                os.write(data);
+                                        } catch (IOException e) 
+                                        {
+                                                e.printStackTrace();
+                                        }
+                                }
+                        }
+                        
+                        try {
+                                os.close();
+                        } catch (IOException e) {
+                                e.printStackTrace();
+                        }
+                }
+        
+                
+                //stop
+                if(null != myRecorder)
+                {
+//                        isRecording = false;
+                        
+                	myRecorder.stop();
+                	myRecorder.release();
+                        
+                	myRecorder = null;
+//                        recordingThread = null;
+                }
+                
+//                copyWaveFile(getTempFilename(),getFilename());
+//                deleteTempFile();
+
+			
+			
+			
 		
 		
-		
-		
-		
-		
-		
+
+			//delay
+			myRecorder.stop();
+			myRecorder.release();
 		
 		
 		
