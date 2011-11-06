@@ -73,21 +73,63 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
         	
     		EditText debugText = (EditText) findViewById(R.id.debugTranscription);
     		debugText.append("Running command: " );
-          Log.d("StalinPhone ::: ", " StalinPhone REC/TESTING !!!!!!!!!!!!!StalinPhone !!!!: " );
+          Log.d("StalinPhone ::: ", " commands" );
 
           
           //public Process exec (String prog, String[] envp, File directory)
           try 
           {
-			Process myCommand = Runtime.getRuntime().exec("/system/xbin/ls", null, null );
-        	try {
-				Thread.sleep(100); //woot.... cant believe that worked :) sweet
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-    		debugText.append("Running cmd... output: " + myCommand.getInputStream().available());
+    	    int startingThreadCount = Thread.activeCount();
+  	        Log.d("StalinPhone ::: ", "pre thread count: " + Thread.activeCount());
+			Process myCommand = Runtime.getRuntime().exec("/system/xbin/ls /dev", null, null );
 
+  	        Log.d("StalinPhone ::: ", "post thread count: " + Thread.activeCount());
+//			try {
+//				myCommand.waitFor();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+  	        
+  	        //worth exploring
+  	      Thread[] runningThreads;
+  	      Thread.enumerate(runningThreads);
+  	      
+  	      
+  	        while(startingThreadCount < Thread.)
+  	        {
+        		try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} //woot.... cant believe that worked :) sweet
+    	          Log.d("StalinPhone ::: ", " 1000 target threads: " +startingThreadCount  );
+    	        Log.d("StalinPhone ::: ", " thread count: " + Thread.activeCount());
+  	        	
+  	        }
+//        	try {
+//
+////    			
+//        		
+////        		Thread.sleep(1000); //woot.... cant believe that worked :) sweet
+////    	          Log.d("StalinPhone ::: ", " 1000 -exit:"  );
+//////    				Runtime.getRuntime().availableProcessors();//ha
+//////  	          Runtime.getRuntime().maxMemory()//ha
+////  	        Log.d("StalinPhone ::: ", " thread count: " + Thread.activeCount());
+//////    		          Log.d("StalinPhone ::: ", " wait for"  );
+////				Thread.sleep(8000); //woot.... cant believe that worked :) sweet
+////		          Log.d("StalinPhone ::: ", " 8000"  );
+////
+////		  	        Log.d("StalinPhone ::: ", " thread count: " + Thread.activeCount());
+//			} catch (InterruptedException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+	          Log.d("StalinPhone ::: ", " commands-exit:"  );
+
+    		debugText.append("Output-exit: " + myCommand.exitValue());
+    		debugText.append("Output: " + myCommand.getInputStream().available());
     		byte[] commandOut = new byte[myCommand.getInputStream().available()];
     		myCommand.getInputStream().read(commandOut,0,myCommand.getInputStream().available());
     		debugText.append( "\n\t Output: " + new String(commandOut) );	
@@ -104,106 +146,106 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
 		
 		
 		
-			int sampleRate = 8000; //can be 44100, 22050, 11025, 8000
-//			4100Hz is currently the only rate that is guaranteed to work on all devices, 
-//			but other rates such as 22050, 16000, and 11025 may work on some devices.
-			
-//			See CHANNEL_IN_MONO and CHANNEL_IN_STEREO. CHANNEL_IN_MONO //hack: CHANNEL_CONFIGURATION_MONO
-			int audioChannel = AudioFormat.CHANNEL_CONFIGURATION_MONO;
-			//.CHANNEL_IN_BACK fail
-			//.CHANNEL_IN_BACK_PROCESSED fail
-			//default seemed to work
-			
-			//See ENCODING_PCM_16BIT and ENCODING_PCM_8BIT
-			int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
-			//default fail?
-			int minBufferSize = AudioRecord.getMinBufferSize(sampleRate, audioChannel, audioFormat);
+//			int sampleRate = 8000; //can be 44100, 22050, 11025, 8000
+////			4100Hz is currently the only rate that is guaranteed to work on all devices, 
+////			but other rates such as 22050, 16000, and 11025 may work on some devices.
+//			
+////			See CHANNEL_IN_MONO and CHANNEL_IN_STEREO. CHANNEL_IN_MONO //hack: CHANNEL_CONFIGURATION_MONO
+//			int audioChannel = AudioFormat.CHANNEL_CONFIGURATION_MONO;
+//			//.CHANNEL_IN_BACK fail
+//			//.CHANNEL_IN_BACK_PROCESSED fail
+//			//default seemed to work
+//			
+//			//See ENCODING_PCM_16BIT and ENCODING_PCM_8BIT
+//			int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
+//			//default fail?
+//			int minBufferSize = AudioRecord.getMinBufferSize(sampleRate, audioChannel, audioFormat);
+////	          Log.d("StalinPhone ::: ", " buffer size: " + minBufferSize);
+////			minBufferSize = 52000000;
 //	          Log.d("StalinPhone ::: ", " buffer size: " + minBufferSize);
-//			minBufferSize = 52000000;
-	          Log.d("StalinPhone ::: ", " buffer size: " + minBufferSize);
-			AudioRecord myRecorder = new AudioRecord(
-        		  MediaRecorder.AudioSource.VOICE_UPLINK, 
-        		  sampleRate,
-        		  audioChannel,
-        		  AudioFormat.ENCODING_DEFAULT,
-        		  minBufferSize);
-			
-			myRecorder.startRecording();
-          
-		
-			
-			
-      	StalinRecService.now = new Date();
-      	String myFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-          myFileName += "/StalinPhone/AaTest-"
-            		 + (StalinRecService.now.getYear() + 1900)  + "-"
-         		 + StalinRecService.now.getMonth() + "-"
-         		 + StalinRecService.now.getDay()  + "--"
-         		 + StalinRecService.now.getHours()  + "-"
-         		 + StalinRecService.now.getMinutes() + "-" 
-         		 + StalinRecService.now.getSeconds() +  ".raw";	
-			
-                byte data[] = new byte[minBufferSize];
-                FileOutputStream os = null;
-                try 
-                {
-                        os = new FileOutputStream(myFileName);
-                } catch (FileNotFoundException e) 
-                {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                }
-                ToggleButton recButton = (ToggleButton) findViewById(R.id.toggleButton1);
-                int read = 0;
-                if(null != os){
-                        while(recButton.isChecked()) //recording till button off?
-                        {  
-                                read = myRecorder.read(data, 0, minBufferSize);
-                                
-                                if(AudioRecord.ERROR_INVALID_OPERATION != read)
-                                {
-                                        try 
-                                        {
-                                                os.write(data);
-                                        } catch (IOException e) 
-                                        {
-                                                e.printStackTrace();
-                                        }
-                                }
-                        }
-                        
-                        try {
-                                os.close();
-                        } catch (IOException e) {
-                                e.printStackTrace();
-                        }
-                }
-        
-                
-                //stop
-                if(null != myRecorder)
-                {
-//                        isRecording = false;
-                        
-                	myRecorder.stop();
-                	myRecorder.release();
-                        
-                	myRecorder = null;
-//                        recordingThread = null;
-                }
-                
-//                copyWaveFile(getTempFilename(),getFilename());
-//                deleteTempFile();
-
-			
-			
-			
-		
-		
-
-			//delay
-			myRecorder.stop();
-			myRecorder.release();
+//			AudioRecord myRecorder = new AudioRecord(
+//        		  MediaRecorder.AudioSource.VOICE_UPLINK, 
+//        		  sampleRate,
+//        		  audioChannel,
+//        		  AudioFormat.ENCODING_DEFAULT,
+//        		  minBufferSize);
+//			
+//			myRecorder.startRecording();
+//          
+//		
+//			
+//			
+//      	StalinRecService.now = new Date();
+//      	String myFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+//          myFileName += "/StalinPhone/AaTest-"
+//            		 + (StalinRecService.now.getYear() + 1900)  + "-"
+//         		 + StalinRecService.now.getMonth() + "-"
+//         		 + StalinRecService.now.getDay()  + "--"
+//         		 + StalinRecService.now.getHours()  + "-"
+//         		 + StalinRecService.now.getMinutes() + "-" 
+//         		 + StalinRecService.now.getSeconds() +  ".raw";	
+//			
+//                byte data[] = new byte[minBufferSize];
+//                FileOutputStream os = null;
+//                try 
+//                {
+//                        os = new FileOutputStream(myFileName);
+//                } catch (FileNotFoundException e) 
+//                {
+//                        // TODO Auto-generated catch block
+//                        e.printStackTrace();
+//                }
+//                ToggleButton recButton = (ToggleButton) findViewById(R.id.toggleButton1);
+//                int read = 0;
+//                if(null != os){
+//                        while(recButton.isChecked()) //recording till button off?
+//                        {  
+//                                read = myRecorder.read(data, 0, minBufferSize);
+//                                
+//                                if(AudioRecord.ERROR_INVALID_OPERATION != read)
+//                                {
+//                                        try 
+//                                        {
+//                                                os.write(data);
+//                                        } catch (IOException e) 
+//                                        {
+//                                                e.printStackTrace();
+//                                        }
+//                                }
+//                        }
+//                        
+//                        try {
+//                                os.close();
+//                        } catch (IOException e) {
+//                                e.printStackTrace();
+//                        }
+//                }
+//        
+//                
+//                //stop
+//                if(null != myRecorder)
+//                {
+////                        isRecording = false;
+//                        
+//                	myRecorder.stop();
+//                	myRecorder.release();
+//                        
+//                	myRecorder = null;
+////                        recordingThread = null;
+//                }
+//                
+////                copyWaveFile(getTempFilename(),getFilename());
+////                deleteTempFile();
+//
+//			
+//			
+//			
+//		
+//		
+//
+//			//delay
+//			myRecorder.stop();
+//			myRecorder.release();
 		
 		
 		
