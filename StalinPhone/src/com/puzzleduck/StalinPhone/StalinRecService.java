@@ -206,6 +206,7 @@ public class StalinRecService extends Service {
             Log.d("DEBUG", "STALINphone ::: creating myAudioRecorder for:" + myFileName );
         	MediaRecorder myAudioRecorder = new MediaRecorder();
         	myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);//only mic working
+//        	myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.VOICE_DOWNLINK);//only mic working
         	myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         	myAudioRecorder.setOutputFile(myFileName);
         	myAudioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);

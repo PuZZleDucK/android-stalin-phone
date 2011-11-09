@@ -81,33 +81,64 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
           {
     	    int startingThreadCount = Thread.activeCount();
   	        Log.d("StalinPhone ::: ", "pre thread count: " + Thread.activeCount());
-			Process myCommand = Runtime.getRuntime().exec("/system/xbin/ls /dev", null, null );
+    	      Thread[] runningThreads = new Thread[Thread.activeCount()];
+    	      Thread.enumerate(runningThreads);
+
+            Log.d("StalinPhone ::: ", " running threads: " + runningThreads.length  );
+            for(int i = 0; i < runningThreads.length; i++)
+            {
+                Log.d("StalinPhone ::: ", " running threads: " + runningThreads[i].getName()  );
+          	  
+            }
+//			Process myCommand = Runtime.getRuntime().exec("/system/xbin/ls -la /proc", null, null );
+			Process myCommand = Runtime.getRuntime().exec("/system/xbin/ls -la > /dev/msm_pcm_out", null, null );
 
   	        Log.d("StalinPhone ::: ", "post thread count: " + Thread.activeCount());
-//			try {
-//				myCommand.waitFor();
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-  	        
-  	        //worth exploring
-  	      Thread[] runningThreads;
-  	      Thread.enumerate(runningThreads);
-  	      
-  	      
-  	        while(startingThreadCount < Thread.)
-  	        {
-        		try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} //woot.... cant believe that worked :) sweet
-    	          Log.d("StalinPhone ::: ", " 1000 target threads: " +startingThreadCount  );
-    	        Log.d("StalinPhone ::: ", " thread count: " + Thread.activeCount());
-  	        	
-  	        }
+			try {
+				myCommand.waitFor();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+	  	        Log.d("StalinPhone ::: ", "WAIT FAIL!!!!!!!!!!!!: " + Thread.activeCount());
+				e.printStackTrace();
+			}
+			
+  	        Log.d("StalinPhone ::: ", "post wait count: " + Thread.activeCount());
+
+
+//  	      runningThreads = new Thread[Thread.activeCount()];
+//  	      Thread.enumerate(runningThreads);
+//  	    Log.d("StalinPhone ::: ", " DELAY????? " + runningThreads[0].getName() );
+//  	        while( runningThreads[0].getName().equals("java.lang.ProcessManager") )
+//  	        {
+//  	          Log.d("StalinPhone ::: ", " DELAY DELAY DELAY" );
+////        		try {
+////					Thread.sleep(1000);
+////				} catch (InterruptedException e) {
+////					// TODO Auto-generated catch block
+////					e.printStackTrace();
+////				} //woot.... cant believe that worked :) sweet
+//        	      runningThreads = new Thread[Thread.activeCount()];
+//          	      Thread.enumerate(runningThreads);
+//                  for(int i = 0; i < runningThreads.length; i++)
+//                  {
+//                      Log.d("StalinPhone ::: ", " running threads: " + runningThreads[i].getName()  );
+//                	  
+//                  }
+////    	          Log.d("StalinPhone ::: ", " 1000 target threads: " +startingThreadCount  );
+////    	          
+////
+////    	          Log.d("StalinPhone ::: ", " running threads: " + runningThreads.length  );
+////    	          for(int i = 0; i < runningThreads.length; i++)
+////    	          {
+////    	              Log.d("StalinPhone ::: ", " running threads: " + runningThreads[i].getName()  );
+////    	        	  
+////    	          }
+////    	          
+////    	        Log.d("StalinPhone ::: ", " thread count: " + Thread.activeCount());
+//  	        	
+//  	        }
+    	          
+    	          
 //        	try {
 //
 ////    			
