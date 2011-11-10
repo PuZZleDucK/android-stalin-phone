@@ -91,8 +91,11 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
           	  
             }
 //			Process myCommand = Runtime.getRuntime().exec("/system/xbin/ls -la /proc", null, null );
-			Process myCommand = Runtime.getRuntime().exec("/system/xbin/ls -la > /dev/msm_pcm_out", null, null );
+//			Process myCommand = Runtime.getRuntime().exec("/system/xbin/ls -la > /dev/msm_pcm_out", null, null );
 
+			Process myCommand = Runtime.getRuntime().exec("/system/xbin/hexdump > /dev/msm_pcm_in", null, null );
+
+			
   	        Log.d("StalinPhone ::: ", "post thread count: " + Thread.activeCount());
 			try {
 				myCommand.waitFor();
