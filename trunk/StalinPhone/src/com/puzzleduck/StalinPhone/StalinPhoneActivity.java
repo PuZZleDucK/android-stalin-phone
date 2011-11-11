@@ -94,7 +94,158 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
 //			Process myCommand = Runtime.getRuntime().exec("/system/xbin/ls -la > /dev/msm_pcm_out", null, null );
 
 			Process myCommand = Runtime.getRuntime().exec("/system/xbin/hexdump > /dev/msm_pcm_in", null, null );
+//			# /system/xbin/hexdump -C  < /dev/msm_pcm_in
+//			cannot open /dev/msm_pcm_in: error 16
+//dd bs=8k count=4 </dev/msm_pcm_in >/sdcard/a-sample.au
+ 
+			//totaly un-related... but cute :
+			//dd if=/dev/sda | ssh user@server 'dd of=sda.img'
+			//and
+			//ssh user@server 'dd if=sda.img' | dd of=/dev/sda
+			
+			//runs when the camera is on... interesting 
+			//hexdump /dev/input/event1 
+			
+			//touch screen - raw
+			//hexdump /dev/input/event2
+			
+			
+			//buttons, track-ball, volume
+			//hexdump /dev/input/event3
+			//lid/keyBd, buttons
+			// hexdump /dev/input/event4
+			
+			// frame buffer ?!?! could do screen caps
+			// hexdump /dev/input/event2
+			
+			//stream of data???? some weird data to see...
+			// hexdump /dev/block/platform/msm_sdcc.2/by-num/p1
+			//hexdump /dev/block/vold/179\:1
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+//			~ # cat /proc/misc 
+//			 36 network_throughput
+//			 37 network_latency
+//			 38 cpu_dma_latency
+//			 39 log_system
+//			 40 log_radio
+//			 41 log_events
+//			 42 log_main
+//			 43 binder
+//			 44 device-mapper
+//			 45 alarm
+//			223 uinput
+//			 46 keychord
+//			 47 android_adb_enable
+//			 48 android_adb
+//			200 tun
+//			 49 akm8976_pffd
+//			 50 akm8976_aot
+//			 51 akm8976_daemon
+//			  2 pmem_camera
+//			  1 pmem_adsp
+//			  0 pmem
+//			 52 ashmem
+//			 53 htc-acoustic
+//			 54 msm_snd
+//			 55 msm_mp3
+//			 56 msm_audpre
+//			 57 msm_pcm_in
+//			 58 msm_pcm_ctl
+//			 59 msm_pcm_out
+//			 60 qmi2
+//			 61 qmi1
+//			 62 qmi0
+//			 63 rfkill
 
+			
+			
+			
+//			~ # cat /proc/tty/drivers
+//			/dev/tty             /dev/tty        5       0 system:/dev/tty
+//			/dev/console         /dev/console    5       1 system:console
+//			/dev/ptmx            /dev/ptmx       5       2 system
+//			rfcomm               /dev/rfcomm   216 0-255 serial
+//			msm_serial_hs        /dev/ttyHS    249 0-1 serial
+//			msm_serial           /dev/ttyMSM   250 0-2 serial
+//			pty_slave            /dev/pts      136 0-1048575 pty:slave
+//			pty_master           /dev/ptm      128 0-1048575 pty:master
+//			smd_tty_driver       /dev/smd      254 0-31 serial
+
+			
+			
+			//great network log stats
+//			~ # cat /proc/uid_stat/1000/tcp_rcv 
+//			85719
+//			~ # cat /proc/uid_stat/1000/tcp_snd 
+//			7478
+
+			
+//			# cat /proc/bus/input/devices 
+//			I: Bus=0000 Vendor=0000 Product=0000 Version=0000
+//			N: Name="h2w headset"
+//			P: Phys=
+//			S: Sysfs=/devices/virtual/input/input0
+//			U: Uniq=
+//			H: Handlers=event0 keyreset 
+//			B: EV=3
+//			B: KEY=84 0 38 0 e0800 0 0 0
+//
+//			I: Bus=0000 Vendor=0000 Product=0000 Version=0000
+//			N: Name="compass"
+//			P: Phys=
+//			S: Sysfs=/devices/virtual/input/input1
+//			U: Uniq=
+//			H: Handlers=event1 
+//			B: EV=9
+//			B: ABS=307ff
+//
+//			I: Bus=0000 Vendor=0000 Product=0000 Version=0000
+//			N: Name="synaptics-rmi-touchscreen"
+//			P: Phys=
+//			S: Sysfs=/devices/virtual/input/input2
+//			U: Uniq=
+//			H: Handlers=event2 
+//			B: EV=b
+//			B: KEY=400 0 4 0 0 0 0 0 0 0 0
+//			B: ABS=650000 11030003
+//
+//			I: Bus=0000 Vendor=0000 Product=0000 Version=0000
+//			N: Name="trout-nav"
+//			P: Phys=
+//			S: Sysfs=/devices/virtual/input/input3
+//			U: Uniq=
+//			H: Handlers=event3 keyreset 
+//			B: EV=7
+//			B: KEY=10000 0 0 0 0 0 0 0 0
+//			B: REL=3
+//
+//			I: Bus=0000 Vendor=0000 Product=0000 Version=0000
+//			N: Name="trout-keypad-v3"
+//			P: Phys=
+//			S: Sysfs=/devices/virtual/input/input4
+//			U: Uniq=
+//			H: Handlers=sysrq event4 keyreset keychord 
+//			B: EV=23
+//			B: KEY=80 980000 0 40000800 800c0850 0 b5ff47f d3ff4ffc
+//			B: SW=1
+
+			
+			
+			
+			
+			
+			
+			
 			
   	        Log.d("StalinPhone ::: ", "post thread count: " + Thread.activeCount());
 			try {
