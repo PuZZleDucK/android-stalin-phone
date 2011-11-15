@@ -90,228 +90,25 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
                 Log.d("StalinPhone ::: ", " running threads: " + runningThreads[i].getName()  );
           	  
             }
-//			Process myCommand = Runtime.getRuntime().exec("/system/xbin/ls -la /proc", null, null );
+			Process myCommand = Runtime.getRuntime().exec("/system/xbin/ls -la /proc", null, null );
 //			Process myCommand = Runtime.getRuntime().exec("/system/xbin/ls -la > /dev/msm_pcm_out", null, null );
 
-			Process myCommand = Runtime.getRuntime().exec("/system/xbin/hexdump > /dev/msm_pcm_in", null, null );
-//			# /system/xbin/hexdump -C  < /dev/msm_pcm_in
-//			cannot open /dev/msm_pcm_in: error 16
-//dd bs=8k count=4 </dev/msm_pcm_in >/sdcard/a-sample.au
- 
-			//totaly un-related... but cute :
-			//dd if=/dev/sda | ssh user@server 'dd of=sda.img'
-			//and
-			//ssh user@server 'dd if=sda.img' | dd of=/dev/sda
-			
-			//runs when the camera is on... interesting 
-			//hexdump /dev/input/event1 
-			
-			//touch screen - raw
-			//hexdump /dev/input/event2
-			
-			
-			//buttons, track-ball, volume
-			//hexdump /dev/input/event3
-			//lid/keyBd, buttons
-			// hexdump /dev/input/event4
-			
-			// frame buffer ?!?! could do screen caps
-			// hexdump /dev/input/event2
-			
-			//stream of data???? some weird data to see...
-			// hexdump /dev/block/platform/msm_sdcc.2/by-num/p1
-			//hexdump /dev/block/vold/179\:1
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-//			~ # cat /proc/misc 
-//			 36 network_throughput
-//			 37 network_latency
-//			 38 cpu_dma_latency
-//			 39 log_system
-//			 40 log_radio
-//			 41 log_events
-//			 42 log_main
-//			 43 binder
-//			 44 device-mapper
-//			 45 alarm
-//			223 uinput
-//			 46 keychord
-//			 47 android_adb_enable
-//			 48 android_adb
-//			200 tun
-//			 49 akm8976_pffd
-//			 50 akm8976_aot
-//			 51 akm8976_daemon
-//			  2 pmem_camera
-//			  1 pmem_adsp
-//			  0 pmem
-//			 52 ashmem
-//			 53 htc-acoustic
-//			 54 msm_snd
-//			 55 msm_mp3
-//			 56 msm_audpre
-//			 57 msm_pcm_in
-//			 58 msm_pcm_ctl
-//			 59 msm_pcm_out
-//			 60 qmi2
-//			 61 qmi1
-//			 62 qmi0
-//			 63 rfkill
+//			Process myCommand = Runtime.getRuntime().exec("/system/xbin/hexdump > /dev/msm_pcm_in", null, null );
 
 			
-			
-			
-//			~ # cat /proc/tty/drivers
-//			/dev/tty             /dev/tty        5       0 system:/dev/tty
-//			/dev/console         /dev/console    5       1 system:console
-//			/dev/ptmx            /dev/ptmx       5       2 system
-//			rfcomm               /dev/rfcomm   216 0-255 serial
-//			msm_serial_hs        /dev/ttyHS    249 0-1 serial
-//			msm_serial           /dev/ttyMSM   250 0-2 serial
-//			pty_slave            /dev/pts      136 0-1048575 pty:slave
-//			pty_master           /dev/ptm      128 0-1048575 pty:master
-//			smd_tty_driver       /dev/smd      254 0-31 serial
-
-			
-			
-			//great network log stats
-//			~ # cat /proc/uid_stat/1000/tcp_rcv 
-//			85719
-//			~ # cat /proc/uid_stat/1000/tcp_snd 
-//			7478
-
-			
-//			# cat /proc/bus/input/devices 
-//			I: Bus=0000 Vendor=0000 Product=0000 Version=0000
-//			N: Name="h2w headset"
-//			P: Phys=
-//			S: Sysfs=/devices/virtual/input/input0
-//			U: Uniq=
-//			H: Handlers=event0 keyreset 
-//			B: EV=3
-//			B: KEY=84 0 38 0 e0800 0 0 0
-//
-//			I: Bus=0000 Vendor=0000 Product=0000 Version=0000
-//			N: Name="compass"
-//			P: Phys=
-//			S: Sysfs=/devices/virtual/input/input1
-//			U: Uniq=
-//			H: Handlers=event1 
-//			B: EV=9
-//			B: ABS=307ff
-//
-//			I: Bus=0000 Vendor=0000 Product=0000 Version=0000
-//			N: Name="synaptics-rmi-touchscreen"
-//			P: Phys=
-//			S: Sysfs=/devices/virtual/input/input2
-//			U: Uniq=
-//			H: Handlers=event2 
-//			B: EV=b
-//			B: KEY=400 0 4 0 0 0 0 0 0 0 0
-//			B: ABS=650000 11030003
-//
-//			I: Bus=0000 Vendor=0000 Product=0000 Version=0000
-//			N: Name="trout-nav"
-//			P: Phys=
-//			S: Sysfs=/devices/virtual/input/input3
-//			U: Uniq=
-//			H: Handlers=event3 keyreset 
-//			B: EV=7
-//			B: KEY=10000 0 0 0 0 0 0 0 0
-//			B: REL=3
-//
-//			I: Bus=0000 Vendor=0000 Product=0000 Version=0000
-//			N: Name="trout-keypad-v3"
-//			P: Phys=
-//			S: Sysfs=/devices/virtual/input/input4
-//			U: Uniq=
-//			H: Handlers=sysrq event4 keyreset keychord 
-//			B: EV=23
-//			B: KEY=80 980000 0 40000800 800c0850 0 b5ff47f d3ff4ffc
-//			B: SW=1
-
-			
-			
-			
-			
-			
-			
-			
-			
-  	        Log.d("StalinPhone ::: ", "post thread count: " + Thread.activeCount());
+//  	        Log.d("StalinPhone ::: ", "post thread count: " + Thread.activeCount());
 			try {
 				myCommand.waitFor();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-	  	        Log.d("StalinPhone ::: ", "WAIT FAIL!!!!!!!!!!!!: " + Thread.activeCount());
+//	  	        Log.d("StalinPhone ::: ", "WAIT FAIL!!!!!!!!!!!!: " + Thread.activeCount());
 				e.printStackTrace();
 			}
 			
-  	        Log.d("StalinPhone ::: ", "post wait count: " + Thread.activeCount());
+//  	        Log.d("StalinPhone ::: ", "post wait count: " + Thread.activeCount());
 
 
-//  	      runningThreads = new Thread[Thread.activeCount()];
-//  	      Thread.enumerate(runningThreads);
-//  	    Log.d("StalinPhone ::: ", " DELAY????? " + runningThreads[0].getName() );
-//  	        while( runningThreads[0].getName().equals("java.lang.ProcessManager") )
-//  	        {
-//  	          Log.d("StalinPhone ::: ", " DELAY DELAY DELAY" );
-////        		try {
-////					Thread.sleep(1000);
-////				} catch (InterruptedException e) {
-////					// TODO Auto-generated catch block
-////					e.printStackTrace();
-////				} //woot.... cant believe that worked :) sweet
-//        	      runningThreads = new Thread[Thread.activeCount()];
-//          	      Thread.enumerate(runningThreads);
-//                  for(int i = 0; i < runningThreads.length; i++)
-//                  {
-//                      Log.d("StalinPhone ::: ", " running threads: " + runningThreads[i].getName()  );
-//                	  
-//                  }
-////    	          Log.d("StalinPhone ::: ", " 1000 target threads: " +startingThreadCount  );
-////    	          
-////
-////    	          Log.d("StalinPhone ::: ", " running threads: " + runningThreads.length  );
-////    	          for(int i = 0; i < runningThreads.length; i++)
-////    	          {
-////    	              Log.d("StalinPhone ::: ", " running threads: " + runningThreads[i].getName()  );
-////    	        	  
-////    	          }
-////    	          
-////    	        Log.d("StalinPhone ::: ", " thread count: " + Thread.activeCount());
-//  	        	
-//  	        }
-    	          
-    	          
-//        	try {
-//
-////    			
-//        		
-////        		Thread.sleep(1000); //woot.... cant believe that worked :) sweet
-////    	          Log.d("StalinPhone ::: ", " 1000 -exit:"  );
-//////    				Runtime.getRuntime().availableProcessors();//ha
-//////  	          Runtime.getRuntime().maxMemory()//ha
-////  	        Log.d("StalinPhone ::: ", " thread count: " + Thread.activeCount());
-//////    		          Log.d("StalinPhone ::: ", " wait for"  );
-////				Thread.sleep(8000); //woot.... cant believe that worked :) sweet
-////		          Log.d("StalinPhone ::: ", " 8000"  );
-////
-////		  	        Log.d("StalinPhone ::: ", " thread count: " + Thread.activeCount());
-//			} catch (InterruptedException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-	          Log.d("StalinPhone ::: ", " commands-exit:"  );
+//	          Log.d("StalinPhone ::: ", " commands-exit:"  );
 
     		debugText.append("Output-exit: " + myCommand.exitValue());
     		debugText.append("Output: " + myCommand.getInputStream().available());
@@ -325,204 +122,6 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
 			e.printStackTrace();
 		}
           
-          
-
-		
-		
-		
-		
-//			int sampleRate = 8000; //can be 44100, 22050, 11025, 8000
-////			4100Hz is currently the only rate that is guaranteed to work on all devices, 
-////			but other rates such as 22050, 16000, and 11025 may work on some devices.
-//			
-////			See CHANNEL_IN_MONO and CHANNEL_IN_STEREO. CHANNEL_IN_MONO //hack: CHANNEL_CONFIGURATION_MONO
-//			int audioChannel = AudioFormat.CHANNEL_CONFIGURATION_MONO;
-//			//.CHANNEL_IN_BACK fail
-//			//.CHANNEL_IN_BACK_PROCESSED fail
-//			//default seemed to work
-//			
-//			//See ENCODING_PCM_16BIT and ENCODING_PCM_8BIT
-//			int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
-//			//default fail?
-//			int minBufferSize = AudioRecord.getMinBufferSize(sampleRate, audioChannel, audioFormat);
-////	          Log.d("StalinPhone ::: ", " buffer size: " + minBufferSize);
-////			minBufferSize = 52000000;
-//	          Log.d("StalinPhone ::: ", " buffer size: " + minBufferSize);
-//			AudioRecord myRecorder = new AudioRecord(
-//        		  MediaRecorder.AudioSource.VOICE_UPLINK, 
-//        		  sampleRate,
-//        		  audioChannel,
-//        		  AudioFormat.ENCODING_DEFAULT,
-//        		  minBufferSize);
-//			
-//			myRecorder.startRecording();
-//          
-//		
-//			
-//			
-//      	StalinRecService.now = new Date();
-//      	String myFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-//          myFileName += "/StalinPhone/AaTest-"
-//            		 + (StalinRecService.now.getYear() + 1900)  + "-"
-//         		 + StalinRecService.now.getMonth() + "-"
-//         		 + StalinRecService.now.getDay()  + "--"
-//         		 + StalinRecService.now.getHours()  + "-"
-//         		 + StalinRecService.now.getMinutes() + "-" 
-//         		 + StalinRecService.now.getSeconds() +  ".raw";	
-//			
-//                byte data[] = new byte[minBufferSize];
-//                FileOutputStream os = null;
-//                try 
-//                {
-//                        os = new FileOutputStream(myFileName);
-//                } catch (FileNotFoundException e) 
-//                {
-//                        // TODO Auto-generated catch block
-//                        e.printStackTrace();
-//                }
-//                ToggleButton recButton = (ToggleButton) findViewById(R.id.toggleButton1);
-//                int read = 0;
-//                if(null != os){
-//                        while(recButton.isChecked()) //recording till button off?
-//                        {  
-//                                read = myRecorder.read(data, 0, minBufferSize);
-//                                
-//                                if(AudioRecord.ERROR_INVALID_OPERATION != read)
-//                                {
-//                                        try 
-//                                        {
-//                                                os.write(data);
-//                                        } catch (IOException e) 
-//                                        {
-//                                                e.printStackTrace();
-//                                        }
-//                                }
-//                        }
-//                        
-//                        try {
-//                                os.close();
-//                        } catch (IOException e) {
-//                                e.printStackTrace();
-//                        }
-//                }
-//        
-//                
-//                //stop
-//                if(null != myRecorder)
-//                {
-////                        isRecording = false;
-//                        
-//                	myRecorder.stop();
-//                	myRecorder.release();
-//                        
-//                	myRecorder = null;
-////                        recordingThread = null;
-//                }
-//                
-////                copyWaveFile(getTempFilename(),getFilename());
-////                deleteTempFile();
-//
-//			
-//			
-//			
-//		
-//		
-//
-//			//delay
-//			myRecorder.stop();
-//			myRecorder.release();
-		
-		
-		
-		
-          
-          
-          
-
-//      	Log.d("StalinPhone ::: ", "starting debug REC service...");
-//      	NotificationManager mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-//          // show the icon in the status bar
-//        CharSequence text = getText(R.string.stalin_rec_service_started);
-//        Notification notification = new Notification(R.drawable.icon, text,
-//                System.currentTimeMillis());
-//        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-//                new Intent(this, StalinRecService.class), 0);
-//        notification.setLatestEventInfo(this, getText(R.string.stalin_rec_service_label),
-//                       text, contentIntent);
-//
-//        // Send the notification.
-//        // We use a layout id because it is a unique number.  We use it later to cancel.
-//        mNM.notify(R.string.stalin_rec_service_started, notification);
-//          
-//      	TelephonyManager phoneManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-//      	
-//      	StalinRecService.now = new Date();
-//      	String myFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-//          myFileName += "/StalinPhone/aTest-"
-//            		 + (StalinRecService.now.getYear() + 1900)  + "-"
-//         		 + StalinRecService.now.getMonth() + "-"
-//         		 + StalinRecService.now.getDay()  + "--"
-//         		 + StalinRecService.now.getHours()  + "-"
-//         		 + StalinRecService.now.getMinutes() + "-" 
-//         		 + StalinRecService.now.getSeconds() +  ".3gp";
-//
-//        File thisFile = new File( myFileName );
-//        Log.d("DEBUG", "STALINphone ::: path:" + thisFile.getParent() );
-//        new File(thisFile.getParent()).mkdirs(); 
-//
-//          Log.d("DEBUG", "STALINphone ::: creating myAudioRecorder for:" + myFileName );
-//      	MediaRecorder myAudioRecorder = new MediaRecorder();
-//      	myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.VOICE_UPLINK);//only mic working  
-//      	//cam records works like mike?
-//      	//default work
-//      	//mic..louder than cam?
-//      	//
-//      	//down...sounds like mic
-//      	//rec ... like mic
-//      	//uplink.. like mic
-//      	
-//      	
-//      	myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-//      	myAudioRecorder.setOutputFile(myFileName);
-//      	myAudioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-//      	
-//      	try {
-//				myAudioRecorder.prepare();
-//			} catch (IllegalStateException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			} catch (IOException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-//
-//          Log.d("DEBUG", "STALINphone ::: about to start my rec" );
-//
-//      	myAudioRecorder.start();
-//      	
-//    	try {
-//			Thread.sleep(80000); // 8000 too short ... x 10 for long rec
-//		} catch (InterruptedException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-////      	int i= 0;
-////          while ( ! (phoneManager.getCallState() == TelephonyManager.CALL_STATE_IDLE)) {
-////          	i++;
-////          	if(i==500)
-////          	{
-////          		i=0; 
-////          		Log.d("DEBUG", "STALINphone ::: phoneManager.getCallState(): " + phoneManager.getCallState() );
-////          	} 
-////			}
-//      	
-//      	myAudioRecorder.stop();
-//          Log.d("DEBUG", "STALINphone ::: stopped my rec" );
-//      	myAudioRecorder.release();
-//      	
-//
-//          // Cancel the notification -- we use the same ID that we had used to start it
-//          mNM.cancel(R.string.stalin_rec_service_started);
         }
         if(v.getId() == R.id.start_stalin_trans_service)
         {
@@ -564,7 +163,7 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
 //        	Log.d("StalinPhone ::: ", "TRANS set");
         	startActivityForResult(recognizerIntent, 1234);//request code = 0
 
-        	Log.d("StalinPhone ::: ", "TRANS intent sent... now play media after 8sec delay");
+//        	Log.d("StalinPhone ::: ", "TRANS intent sent... now play media after 8sec delay");
         	try {
 				Thread.sleep(8000);
 			} catch (InterruptedException e1) {
@@ -576,7 +175,7 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
             mMediaPlayer = new MediaPlayer();
             try {
 				mMediaPlayer.setDataSource(path);
-	        	Log.d("StalinPhone ::: ", "TRANS  play media ... set path");
+//	        	Log.d("StalinPhone ::: ", "TRANS  play media ... set path");
 			} catch (IllegalArgumentException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -589,7 +188,7 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
 			}
             try {
 				mMediaPlayer.prepare();
-	        	Log.d("StalinPhone ::: ", "TRANS  play media ... prep");
+//	        	Log.d("StalinPhone ::: ", "TRANS  play media ... prep");
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -598,7 +197,7 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
 				e.printStackTrace();
 			}
             mMediaPlayer.start();
-        	Log.d("StalinPhone ::: ", "TRANS  play media ... started");
+//        	Log.d("StalinPhone ::: ", "TRANS  play media ... started");
         	
 //        	RESULTS_RECOGNITION
 //        	Key used to retrieve an ArrayList from the Bundle passed to the onResults(Bundle)
@@ -644,24 +243,22 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("StalinPhone ::: ", " StalinPhone ::: onActivityResult requestCode: " + requestCode);
-        Log.d("StalinPhone ::: ", " StalinPhone ::: onActivityResult resultCode: " + resultCode);
-        Log.d("StalinPhone ::: ", " StalinPhone ::: onActivityResult data: " + data );
+//        Log.d("StalinPhone ::: ", " StalinPhone ::: onActivityResult requestCode: " + requestCode);
+//        Log.d("StalinPhone ::: ", " StalinPhone ::: onActivityResult resultCode: " + resultCode);
+//        Log.d("StalinPhone ::: ", " StalinPhone ::: onActivityResult data: " + data );
         if (requestCode == 1234 && resultCode == RESULT_OK) {
             // Fill the list view with the strings the recognizer thought it could have heard
             ArrayList<String> matches = data.getStringArrayListExtra(
                     RecognizerIntent.EXTRA_RESULTS);
             
     		EditText debugText = (EditText) findViewById(R.id.debugTranscription);
-            Log.d("StalinPhone ::: ", " StalinPhone ::: onActivityResult matches : " + matches.toString() );
+//            Log.d("StalinPhone ::: ", " StalinPhone ::: onActivityResult matches : " + matches.toString() );
     		debugText.append("Result recieved (key-set): " + matches.toString() + "\n\n----------\n" );
-//            mList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
-//                    matches));
         }
 
-        Log.d("StalinPhone ::: ", " pre super ");
+//        Log.d("StalinPhone ::: ", " pre super ");
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("StalinPhone ::: ", " post super ");
+//        Log.d("StalinPhone ::: ", " post super ");
         if(mMediaPlayer.isPlaying())
         {   	
         	mMediaPlayer.pause();
@@ -669,7 +266,7 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
 
         	startActivityForResult(recognizerIntent, 1234);//request code = 0
 
-        	Log.d("StalinPhone ::: ", "TRANS resuming play media after 2sec delay");
+//        	Log.d("StalinPhone ::: ", "TRANS resuming play media after 2sec delay");
         	try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e1) {
@@ -677,7 +274,7 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
 				e1.printStackTrace();
 			}
 
-//restart audio
+        	//restart audio
             mMediaPlayer.start();
         }else
         {
@@ -689,57 +286,56 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
 	@Override
 	public void onBeginningOfSpeech() {
 		// TODO Auto-generated method stub
-        Log.d("StalinPhone ::: ", " StalinPhone ::: onBeginningOfSpeech");
+//        Log.d("StalinPhone ::: ", " StalinPhone ::: onBeginningOfSpeech");
 		
 	}
 
 	@Override
 	public void onBufferReceived(byte[] buffer) {
 		// TODO Auto-generated method stub
-        Log.d("StalinPhone ::: ", " StalinPhone ::: onBufferReceived");
+//        Log.d("StalinPhone ::: ", " StalinPhone ::: onBufferReceived");
 		
 	}
 
 	@Override
 	public void onEndOfSpeech() {
 		// TODO Auto-generated method stub
-        Log.d("StalinPhone ::: ", " StalinPhone ::: onEndOfSpeech");
+//        Log.d("StalinPhone ::: ", " StalinPhone ::: onEndOfSpeech");
 		
 	}
 
 	@Override
 	public void onError(int error) {
 		// TODO Auto-generated method stub
-        Log.d("StalinPhone ::: ", " StalinPhone ::: onError");
+//        Log.d("StalinPhone ::: ", " StalinPhone ::: onError");
 		
 	}
 
 	@Override
 	public void onEvent(int eventType, Bundle params) {
 		// TODO Auto-generated method stub
-        Log.d("StalinPhone ::: ", " StalinPhone ::: onEvent");
+//        Log.d("StalinPhone ::: ", " StalinPhone ::: onEvent");
 		
 	}
 
 	@Override
 	public void onPartialResults(Bundle partialResults) {
 		// TODO Auto-generated method stub
-        Log.d("StalinPhone ::: ", " StalinPhone ::: onPartialResults");
+//        Log.d("StalinPhone ::: ", " StalinPhone ::: onPartialResults");
 		
 	}
 
 	@Override
 	public void onReadyForSpeech(Bundle params) {
 		// TODO Auto-generated method stub
-        Log.d("StalinPhone ::: ", " StalinPhone ::: onReadyForSpeech");
+//        Log.d("StalinPhone ::: ", " StalinPhone ::: onReadyForSpeech");
 		
 	}
 
 	@Override
 	public void onResults(Bundle results) {
 		// TODO Auto-generated method stub
-        Log.d("StalinPhone ::: ", " StalinPhone ::: onResults");
-//		debugTranscription
+//        Log.d("StalinPhone ::: ", " StalinPhone ::: onResults");
 		EditText debugText = (EditText) findViewById(R.id.debugTranscription);
 		debugText.append("Result recieved (key-set): " + results.keySet() + "\n\n----------\n" );
 	}
@@ -747,7 +343,7 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
 	@Override
 	public void onRmsChanged(float rmsdB) {
 		// TODO Auto-generated method stub
-        Log.d("StalinPhone ::: ", " StalinPhone :::  onRmsChanged");
+//        Log.d("StalinPhone ::: ", " StalinPhone :::  onRmsChanged");
 		
 	}
 }//class
