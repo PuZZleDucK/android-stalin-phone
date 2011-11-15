@@ -1,5 +1,6 @@
 package com.puzzleduck.StalinPhone;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -75,17 +76,20 @@ public class StalinRecService extends Service {
         	
         	StalinRecService.now = new Date();
         	String myFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-            myFileName += "/StalinPhone/me-"
-              		 + (StalinRecService.now.getYear() + 1900)  + "-"
-           		 + StalinRecService.now.getMonth() + "-"
-           		 + StalinRecService.now.getDay()  + "--"
-           		 + StalinRecService.now.getHours()  + "-"
-           		 + StalinRecService.now.getMinutes() + "-" 
-           		 + StalinRecService.now.getSeconds() +  ".3gp";
+            myFileName += "/StalinPhone/";
+            File myNewFolder = new File(myFileName);
+           myNewFolder.mkdir();
+            myFileName += "me-" + (StalinRecService.now.getYear() + 1900)  + "-"
+	  		 + StalinRecService.now.getMonth() + "-"
+	  		 + StalinRecService.now.getDay()  + "--"
+	  		 + StalinRecService.now.getHours()  + "-"
+	  		 + StalinRecService.now.getMinutes() + "-" 
+	  		 + StalinRecService.now.getSeconds() +  ".3gp";
 
             Log.d("DEBUG", "STALINphone ::: creating myAudioRecorder for:" + myFileName );
         	MediaRecorder myAudioRecorder = new MediaRecorder();
         	myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);//only mic working
+        	//add prefs for this:
         	myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         	myAudioRecorder.setOutputFile(myFileName);
         	myAudioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
