@@ -23,14 +23,14 @@ public class StalinReceiver extends BroadcastReceiver{
 			if (state != null) 
 			{
 				if (state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
-					Log.d("DEBUG", "STALINphone ::: Off the Hook - START REC ");
+//					Log.d("DEBUG", "STALINphone ::: Off the Hook - START REC ");
 					//start recording
 				    PendingIntent recRequestSender;
 
 		            Log.d("StalinPhone ::: ", "creating REC intent");
 		            recRequestSender = PendingIntent.getService(context,0, new Intent(context, StalinRecService.class), 0);
 
-		            Log.d("StalinPhone ::: ", "REC intent created");
+//		            Log.d("StalinPhone ::: ", "REC intent created");
 		            try {
 		            	recRequestSender.send();
 			            Log.d("StalinPhone ::: ", "REC intent sent");
