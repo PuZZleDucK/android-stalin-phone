@@ -14,5 +14,6 @@
     <string name="stalin_button_start_rec">Start rec</string>
     <string name="stalin_button_stop_rec">Stop rec</string>
     <string name="stalin_otherrec_service_label">StalinPhone second recording service</string>
+    <string name="stalinPhoneText">Hello dear user, I\'m afraid their is not much for you to do here... Why don\'t you head over to the StalinPhone directory on your storage card to check out all the recordings you have collected. \n\nYou could also check out \&quot;code.google.com/p/android-stalin-phone\&quot; to have a look at the source code for yourself. \n\nAll source contained in this project is licenced under the Apache License version 2.</string>
 
 </resources>
