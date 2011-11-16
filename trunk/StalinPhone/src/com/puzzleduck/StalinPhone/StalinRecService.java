@@ -26,6 +26,10 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.net.DhcpInfo;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Binder;
 import android.os.Environment;
@@ -141,11 +145,45 @@ public class StalinRecService extends Service {
 	         	
 	         	
 
-	         	wifiManager.getWifiState();
-	         	wifiManager.getConnectionInfo();
-	         	wifiManager.getConfiguredNetworks();
-	         	wifiManager.getDhcpInfo();
-	         	wifiManager.getScanResults();
+	         	switch(wifiManager.getWifiState())
+	         	{
+	         	case WifiManager.WIFI_STATE_DISABLED:
+         			//???
+         			break;
+	         	case WifiManager.WIFI_STATE_DISABLING:
+         			//???
+         			break;
+	         	case WifiManager.WIFI_STATE_ENABLED:
+         			//???
+         			break;
+	         	case WifiManager.WIFI_STATE_ENABLING:
+         			//???
+         			break;
+	         	case WifiManager.WIFI_STATE_UNKNOWN:
+         			//???
+         			break;
+         				
+	         	}
+	         	
+	         	
+	         	WifiInfo wInfo = wifiManager.getConnectionInfo();
+	         	wInfo.getHiddenSSID();
+	         	wInfo.getIpAddress();
+	         	wInfo.getLinkSpeed();
+	         	wInfo.getMacAddress();
+	         	wInfo.getNetworkId();
+	         	wInfo.getRssi();
+	         	wInfo.getSSID();
+	         	wInfo.getSupplicantState();
+	         	
+//	         	WifiConfiguration wConfig = (WifiConfiguration) wifiManager.getConfiguredNetworks();
+//	         	wConfig.;
+	         	
+	         	
+	         	DhcpInfo dInfo = wifiManager.getDhcpInfo();
+	         	int x = dInfo.dns1;
+	         	
+	         	List<ScanResult> sResults = wifiManager.getScanResults();
 		  		
 		  		
 		  		
