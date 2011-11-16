@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <TextView
@@ -16,24 +16,14 @@
         android:text="@string/stalin_button_start_trans" >
     </Button>
 
-    <Button
-        android:id="@+id/start_su"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/stalin_button_start_rec" />
-
-    <ToggleButton
-        android:id="@+id/toggleButton1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ToggleButton" />
-
     <EditText
         android:id="@+id/debugTranscription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.50"
-        android:inputType="textMultiLine" >
+        android:editable="false"
+        android:inputType="none|textMultiLine"
+        android:text="@string/stalinPhoneText" >
 
         <requestFocus />
     </EditText>
