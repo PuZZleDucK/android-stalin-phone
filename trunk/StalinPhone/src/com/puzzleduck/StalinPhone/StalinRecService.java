@@ -1,10 +1,13 @@
 package com.puzzleduck.StalinPhone;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -17,6 +20,7 @@ import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.SensorManager;
+import android.location.Location;
 import android.location.LocationManager;
 import android.media.AudioFormat;
 import android.media.AudioManager;
@@ -40,6 +44,8 @@ public class StalinRecService extends Service {
     private NotificationManager mNM;
     private static Date now;
     private File pictureFile;
+    private BufferedWriter buf;
+    
     @Override
     public void onCreate() {
 //    	Log.d("StalinPhone ::: ", "starting REC service...");
@@ -68,9 +74,10 @@ public class StalinRecService extends Service {
         	ClipboardManager clipManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         	PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
         	SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        	WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        	LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
         	
+        	
+
         	
         	
         	
@@ -94,6 +101,59 @@ public class StalinRecService extends Service {
 		  		recFileName +=  "audio.3gp";
 		  		textFileName +=  "text.txt";
 
+		  		
+	        	LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+	        	//providers
+	        	List<String> providers = locationManager.getAllProviders();
+	        	String locText = "\n Location data at start of call:\n==================";
+	        	for(int pCount = providers.size()-1; 0 <= pCount; pCount--)
+	        	{
+	        		
+	        		locText += "\nLocation-provider: " + providers.get(pCount);
+	            	Location callLoc = locationManager.getLastKnownLocation(providers.get(pCount)) ;
+	            	locText += "\n-(desc)->" + callLoc.describeContents();
+	            	locText += "\n-(acc )->" + callLoc.getAccuracy();
+	            	locText += "\n-(alt )->" + callLoc.getAltitude();
+	            	locText += "\n-(bear)->" + callLoc.getBearing();
+	            	locText += "\n-(lat )->" + callLoc.getLatitude();
+	            	locText += "\n-(lon )->" + callLoc.getLongitude();
+	            	locText += "\n-(prov)->" + callLoc.getProvider();
+	            	locText += "\n-(spd )->" + callLoc.getSpeed();
+	            	locText += "\n-(time)->" + callLoc.getTime();
+	              Log.d("DEBUG", "STALINphone ::: loctest:" + locText );
+
+	        	}
+	        	
+	        	 try {
+					buf = new BufferedWriter(new FileWriter(textFileName));
+					buf.append(locText);
+				      buf.newLine();
+				      buf.close();
+
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+
+		  		
+		  		
+	         	WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+	         	
+	         	
+
+	         	wifiManager.getWifiState();
+	         	wifiManager.getConnectionInfo();
+	         	wifiManager.getConfiguredNetworks();
+	         	wifiManager.getDhcpInfo();
+	         	wifiManager.getScanResults();
+		  		
+		  		
+		  		
+		  		
+		  		
+		  		
+		  		
+		  		
 //            Log.d("DEBUG", "STALINphone ::: creating myAudioRecorder for:" + recFileName );
         	MediaRecorder myAudioRecorder = new MediaRecorder();
         	myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);//only mic working
@@ -127,12 +187,12 @@ public class StalinRecService extends Service {
         	        // no camera on this device
         	    }
 
-              Log.d("DEBUG", "STALINphone-stalinCAM ::: about to start c" );
+//              Log.d("DEBUG", "STALINphone-stalinCAM ::: about to start c" );
             Camera c = null;
             try {
 //            	c= Camera.this.
                 c = Camera.open(); // attempt to get a Camera instance
-                Log.d("DEBUG", "STALINphone-stalinCAM ::: open c" );
+//                Log.d("DEBUG", "STALINphone-stalinCAM ::: open c" );
             }
             catch (Exception e){
                 // Camera is not available (in use or does not exist)
@@ -142,7 +202,7 @@ public class StalinRecService extends Service {
 //            CameraPreview preview = new CameraPreview(c);
             c.startPreview();
 
-            Log.d("DEBUG", "STALINphone-stalinCAM ::: preview c" );
+//            Log.d("DEBUG", "STALINphone-stalinCAM ::: preview c" );
             
             
 //you can get further information about its capabilties using the Camera.getParameters() method and checking the returned Camera.Parameters object
@@ -168,14 +228,14 @@ public class StalinRecService extends Service {
 //            	cameraInfo.
             	if(i>=10000)
             	{
-                    Log.d("DEBUG", "STALINphone-stalinCAM ::: pic" );
+//                    Log.d("DEBUG", "STALINphone-stalinCAM ::: pic" );
             		i=0;
             		camCount++;
 //            		Log.d("DEBUG", "STALINphone ::: phoneManager.getCallState(): " + phoneManager.getCallState() );
             		//capture image
 //            		Capture and Save Files - Setup the code for capturing pictures or videos and saving the output.
             		pictureFile = new File(picFileName + camCount + ".jpg");
-                    Log.d("DEBUG", "STALINphone-stalinCAM ::: pic file" );
+//                    Log.d("DEBUG", "STALINphone-stalinCAM ::: pic file" );
             		
 
                     c.takePicture(null, null, null, new PictureCallback() {
@@ -183,9 +243,9 @@ public class StalinRecService extends Service {
                         @Override
                         public void onPictureTaken(byte[] data, Camera camera) {
 
-                            Log.d("DEBUG", "STALINphone-stalinCAM ::: pic CB start" );
+//                            Log.d("DEBUG", "STALINphone-stalinCAM ::: pic CB start" );
                             if (pictureFile == null){
-                                Log.d("STALIN", "Error creating media file, check storage permissions: ");
+//                                Log.d("STALIN", "Error creating media file, check storage permissions: ");
                                 return;
                             }
 
@@ -194,35 +254,45 @@ public class StalinRecService extends Service {
                                 fos.write(data);
                                 fos.close();
                             } catch (FileNotFoundException e) {
-                                Log.d("STALIN", "File not found: " + e.getMessage());
+//                                Log.d("STALIN", "File not found: " + e.getMessage());
                             } catch (IOException e) {
-                                Log.d("STALIN", "Error accessing file: " + e.getMessage());
+//                                Log.d("STALIN", "Error accessing file: " + e.getMessage());
                             }
-                            Log.d("DEBUG", "STALINphone-stalinCAM ::: pic CB end" );
+//                            Log.d("DEBUG", "STALINphone-stalinCAM ::: pic CB end" );
                         }
-                    });
+                    });// image callback
+            	} // occasional event, eg photo
+			}// while not .CALL_STATE_IDLE
 
-                    Log.d("DEBUG", "STALINphone-stalinCAM ::: pic take" );
-//                    if (pictureFile == null){
-//                        Log.d("STALIN", "Error creating media file, check storage permissions: ");
-//                    }
-////After calling this method, you must not call startPreview() or take another picture until the JPEG callback has returned.
-//                    try {
-//                        FileOutputStream fos = new FileOutputStream(pictureFile);
-//                        fos.write();
-//                        fos.close();
-//                    } catch (FileNotFoundException e) {
-//                        Log.d(TAG, "File not found: " + e.getMessage());
-//                    } catch (IOException e) {
-//                        Log.d(TAG, "Error accessing file: " + e.getMessage());
-//                    }
+            providers = locationManager.getAllProviders();
+        	locText = "\n Location data at end of call:\n==================";
+        	for(int pCount = providers.size()-1; 0 <= pCount; pCount--)
+        	{
+        		
+        		locText += "\nLocation-provider: " + providers.get(pCount);
+            	Location callLoc = locationManager.getLastKnownLocation(providers.get(pCount)) ;
+            	locText += "\n-(desc)->" + callLoc.describeContents();
+            	locText += "\n-(acc )->" + callLoc.getAccuracy();
+            	locText += "\n-(alt )->" + callLoc.getAltitude();
+            	locText += "\n-(bear)->" + callLoc.getBearing();
+            	locText += "\n-(lat )->" + callLoc.getLatitude();
+            	locText += "\n-(lon )->" + callLoc.getLongitude();
+            	locText += "\n-(prov)->" + callLoc.getProvider();
+            	locText += "\n-(spd )->" + callLoc.getSpeed();
+            	locText += "\n-(time)->" + callLoc.getTime();
+        	}
 
+        	try {
+//				BufferedWriter buf = new BufferedWriter(new FileWriter(textFileName));
+				buf.append(locText);
+			      buf.newLine();
+			      buf.close();
 
-                    
-                    
-            	} 
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
 			}
-
+            
 //            Release the Camera - After using the camera, your application must properly release it for use by other applications.
             c.release();
 
@@ -234,19 +304,6 @@ public class StalinRecService extends Service {
             // Cancel the notification -- we use the same ID that we had used to start it
             mNM.cancel(R.string.stalin_rec_service_started);
 
-
-//            Log.d("StalinPhone ::: ", " end call Routing: " + aman.getRouting(AudioManager.ROUTE_ALL));
-//            Log.d("StalinPhone ::: ", " end call Routing: " + aman.getRouting(AudioManager.ROUTE_BLUETOOTH));
-//            Log.d("StalinPhone ::: ", " end call Routing: " + aman.getRouting(AudioManager.ROUTE_BLUETOOTH_A2DP));
-//            Log.d("StalinPhone ::: ", " end call Routing: " + aman.getRouting(AudioManager.ROUTE_EARPIECE));
-//            Log.d("StalinPhone ::: ", " end call Routing: " + aman.getRouting(AudioManager.ROUTE_HEADSET));
-//            Log.d("StalinPhone ::: ", " end call Routing: " + aman.getRouting(AudioManager.ROUTE_SPEAKER));
-//        	
-//            Log.d("StalinPhone ::: ", " end call aud-params: " + aman.getParameters(AUDIO_SERVICE));
-//            Log.d("StalinPhone ::: ", " end call tel-params: " + aman.getParameters(TELEPHONY_SERVICE));
-//            
-//            Log.d("StalinPhone ::: ", " in call mode: " + aman.getMode());
-//            
             
             StalinRecService.this.stopSelf();
         }//mTask
