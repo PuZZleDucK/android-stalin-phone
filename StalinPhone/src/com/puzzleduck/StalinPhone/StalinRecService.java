@@ -98,7 +98,7 @@ public class StalinRecService extends Service {
             File myNewFolder = new File(recFileName);
             myNewFolder.mkdir();
 
-            Log.d("DEBUG", "STALINphone0 :::"  );
+//            Log.d("DEBUG", "STALINphone0 :::"  );
             
 	  		 String textFileName = recFileName;
 	  		 String posttextFileName = recFileName;
@@ -110,7 +110,7 @@ public class StalinRecService extends Service {
 		  		
 		  		
 		  		
-	            Log.d("DEBUG", "STALINphone06 :::"  );
+//	            Log.d("DEBUG", "STALINphone06 :::"  );
 	        	LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	        	//providers
 	        	String outputText = "\n Start of call:\n==================";
@@ -118,7 +118,7 @@ public class StalinRecService extends Service {
 	        	if (locationManager != null) {
 	        		List<String> providers = locationManager.getAllProviders();
 					for (int pCount = providers.size() - 1; 0 <= pCount; pCount--) {
-						Log.d("DEBUG", "STALINphone1.1 :::");
+//						Log.d("DEBUG", "STALINphone1.1 :::");
 						outputText += "\n\nLocation-provider: " + providers.get(pCount);
 						Location callLoc = locationManager.getLastKnownLocation(providers.get(pCount));
 
@@ -136,12 +136,12 @@ public class StalinRecService extends Service {
 									+ callLoc.getAccuracy();
 						}
 						//	            	outputText += "\nProvider: " + callLoc.getProvider();
-						Log.d("DEBUG", "STALINphone1 :::");
+//						Log.d("DEBUG", "STALINphone1 :::");
 
 					}
 				}
 
-	            Log.d("DEBUG", "STALINphone1.5 ::: "  );
+//	            Log.d("DEBUG", "STALINphone1.5 ::: "  );
 	        	
 				WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 
@@ -171,7 +171,7 @@ public class StalinRecService extends Service {
 	         	
 	         	WifiInfo wInfo = wifiManager.getConnectionInfo();
 
-	              Log.d("STALINphone:::", "STALINphone  2 info");
+//	              Log.d("STALINphone:::", "STALINphone  2 info");
          		if (wifiManager != null) 
          		{
 					outputText += "\nSSID: " + wInfo.getSSID();
@@ -187,7 +187,7 @@ public class StalinRecService extends Service {
 				List <WifiConfiguration> wConfigList = wifiManager.getConfiguredNetworks();
 
 	        	outputText += "\n\n Known networks:\n------------------";
-	              Log.d("STALINphone:::", "STALINphone  2 config");
+//	              Log.d("STALINphone:::", "STALINphone  2 config");
     	        	for(int pCount = wConfigList.size()-1; 0 <= pCount; pCount--)
     	        	{
          			
@@ -210,7 +210,7 @@ public class StalinRecService extends Service {
          		}
 	         	
 
-	              Log.d("DEBUG", "STALINphone3 :::");
+//	              Log.d("DEBUG", "STALINphone3 :::");
 
 		        	outputText += "\n\n DNS Info:\n------------------";
 	         	DhcpInfo dInfo = wifiManager.getDhcpInfo();
@@ -239,7 +239,7 @@ public class StalinRecService extends Service {
 	        	}
 		  		
 
-	              Log.d("DEBUG", "STALINphone4 :::"  );
+//	              Log.d("DEBUG", "STALINphone4 :::"  );
 	              
 	        	SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 	        	List<Sensor> sList = sensorManager.getSensorList(Sensor.TYPE_ALL);
@@ -255,7 +255,7 @@ public class StalinRecService extends Service {
 	        	}	
 	        	
 
-	              Log.d("DEBUG", "STALINphone5 :::" );
+//	              Log.d("DEBUG", "STALINphone5 :::" );
 
 //	              Log.d("DEBUG", "STALINphone5 :::" + outputText );
 	              
@@ -271,7 +271,7 @@ public class StalinRecService extends Service {
 	        	}
 	        	
 
-	              Log.d("DEBUG", "STALINphone6 :::" + outputText );
+//	              Log.d("DEBUG", "STALINphone6 :::" + outputText );
 
         		outputText += "\n\n Phone Information:\n------------------";
 	        	
@@ -445,7 +445,7 @@ public class StalinRecService extends Service {
         	if (locationManager != null) {
         		List<String> providers = locationManager.getAllProviders();
 				for (int pCount = providers.size() - 1; 0 <= pCount; pCount--) {
-					Log.d("DEBUG", "STALINphone1.1 :::");
+//					Log.d("DEBUG", "STALINphone1.1 :::");
 					outputText += "\n\nLocation-provider: " + providers.get(pCount);
 					Location callLoc = locationManager.getLastKnownLocation(providers.get(pCount));
 
@@ -463,12 +463,12 @@ public class StalinRecService extends Service {
 								+ callLoc.getAccuracy();
 					}
 					//	            	outputText += "\nProvider: " + callLoc.getProvider();
-					Log.d("DEBUG", "STALINphone1 :::");
+//					Log.d("DEBUG", "STALINphone1 :::");
 
 				}
 			}
 
-            Log.d("DEBUG", "STALINphone1.5 ::: "  );
+//            Log.d("DEBUG", "STALINphone1.5 ::: "  );
         	
 			wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 
@@ -498,7 +498,7 @@ public class StalinRecService extends Service {
          	
          	wInfo = wifiManager.getConnectionInfo();
 
-              Log.d("STALINphone:::", "STALINphone  2 info");
+//              Log.d("STALINphone:::", "STALINphone  2 info");
      		if (wifiManager != null) 
      		{
 				outputText += "\nSSID: " + wInfo.getSSID();
@@ -514,7 +514,7 @@ public class StalinRecService extends Service {
 			wConfigList = wifiManager.getConfiguredNetworks();
 
         	outputText += "\n\n Known networks:\n------------------";
-              Log.d("STALINphone:::", "STALINphone  2 config");
+//              Log.d("STALINphone:::", "STALINphone  2 config");
 	        	for(int pCount = wConfigList.size()-1; 0 <= pCount; pCount--)
 	        	{
      			
@@ -537,7 +537,7 @@ public class StalinRecService extends Service {
      		}
          	
 
-              Log.d("DEBUG", "STALINphone3 :::");
+//              Log.d("DEBUG", "STALINphone3 :::");
 
 	        	outputText += "\n\n DNS Info:\n------------------";
          	dInfo = wifiManager.getDhcpInfo();
@@ -566,7 +566,7 @@ public class StalinRecService extends Service {
         	}
 	  		
 
-              Log.d("DEBUG", "STALINphone4 :::"  );
+//              Log.d("DEBUG", "STALINphone4 :::"  );
               
         	sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         	sList = sensorManager.getSensorList(Sensor.TYPE_ALL);
@@ -582,7 +582,7 @@ public class StalinRecService extends Service {
         	}	
         	
 
-              Log.d("DEBUG", "STALINphone5 :::" );
+//              Log.d("DEBUG", "STALINphone5 :::" );
 
 //              Log.d("DEBUG", "STALINphone5 :::" + outputText );
               
@@ -598,7 +598,7 @@ public class StalinRecService extends Service {
         	}
         	
 
-              Log.d("DEBUG", "STALINphone6 :::" + outputText );
+//              Log.d("DEBUG", "STALINphone6 :::" + outputText );
 
     		outputText += "\n\n Phone Information:\n------------------";
         	
