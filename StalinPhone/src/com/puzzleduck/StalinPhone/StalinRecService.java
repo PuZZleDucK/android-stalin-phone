@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import android.app.Notification;
@@ -18,15 +17,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
-import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
-import android.media.AudioFormat;
-import android.media.AudioManager;
-import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.net.DhcpInfo;
 import android.net.wifi.ScanResult;
@@ -41,14 +36,10 @@ import android.os.PowerManager;
 import android.os.RemoteException;
 import android.telephony.TelephonyManager;
 import android.text.ClipboardManager;
-import android.util.Log;
-import android.widget.EditText;
-import android.widget.Toast;
-import android.widget.ToggleButton;
 
 public class StalinRecService extends Service {
     private NotificationManager mNM;
-    private static Date now;
+//    private static Date now;
     private File pictureFile;
     private BufferedWriter buf;
     
@@ -75,7 +66,7 @@ public class StalinRecService extends Service {
     Runnable mTask = new Runnable() {
         public void run() {
 
-        	StalinRecService.now = new Date();
+//        	StalinRecService.now = new Date();
         	Calendar cal = Calendar.getInstance();
         	String apm;
         	if(cal.get(Calendar.AM_PM)==0)
