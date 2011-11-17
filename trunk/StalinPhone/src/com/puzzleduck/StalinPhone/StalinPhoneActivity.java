@@ -55,13 +55,13 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
         findViewById(R.id.start_stalin_trans_service).setOnClickListener( (OnClickListener) this);
 //        findViewById(R.id.start_su).setOnClickListener( (OnClickListener) this);
 //        findViewById(R.id.toggleButton1).setOnClickListener( (OnClickListener) this);
-        Log.d("StalinPhone ::: ", "trans button set up");
+//        Log.d("StalinPhone ::: ", "trans button set up");
 //icon is Stalin Jamming from uncyclopedia :] thanks sock puppet
     } 
 
 	@Override
 	public void onClick(View v) {
-        Log.d("StalinPhone ::: ", "button clicked: id" + v.getId());
+//        Log.d("StalinPhone ::: ", "button clicked: id" + v.getId());
 		
 		
 
