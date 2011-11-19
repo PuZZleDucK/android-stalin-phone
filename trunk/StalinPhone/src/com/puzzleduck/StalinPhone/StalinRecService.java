@@ -123,8 +123,8 @@ public class StalinRecService extends Service {
 		  		
 //            Log.d("DEBUG", "STALINphone ::: creating myAudioRecorder for:" + recFileName );
         	MediaRecorder myAudioRecorder = new MediaRecorder();
-//        	myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);//only mic working
-        	myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);//only switching to cc for in & out working
+        	myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);//only mic working
+//        	myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);//only switching to cc for in & out working
         	//add prefs for this:
         	myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         	myAudioRecorder.setOutputFile(recFileName);
