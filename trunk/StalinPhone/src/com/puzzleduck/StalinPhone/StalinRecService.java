@@ -58,6 +58,10 @@ public class StalinRecService extends Service {
 
     @Override
     public void onDestroy() {
+    	
+
+        // Cancel the notification -- we use the same ID that we had used to start it
+        mNM.cancel(R.string.stalin_rec_service_started);
     }
 
     /**
@@ -69,22 +73,25 @@ public class StalinRecService extends Service {
 //        	StalinRecService.now = new Date();
         	Calendar cal = Calendar.getInstance();
         	String apm;
-        	if(cal.get(Calendar.AM_PM)==0)
-        	{
-        		apm = "AM";
-        	}else
-        	{
-        		apm = "PM";
-        	}
+
         	String recFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
         	recFileName += "/StalinPhone/";
             recFileName += "record_" + cal.get(Calendar.YEAR)  + "-"//(StalinRecService.now.getYear() + 1900)
 	  		 + cal.get(Calendar.MONTH) + "-" //StalinRecService.now.getMonth()
-	  		 + (cal.get(Calendar.DAY_OF_MONTH)+1)  + "__"//StalinRecService.now.getDay()
+	  		 + (cal.get(Calendar.DAY_OF_MONTH))  + "__"//StalinRecService.now.getDay()
 	  		 + cal.get(Calendar.HOUR)  + "."//StalinRecService.now.getHours()
 	  		 + cal.get(Calendar.MINUTE) + "."//StalinRecService.now.getMinutes() 
-	  		 + cal.get(Calendar.SECOND) + " "//StalinRecService.now.getSeconds()
-	  		 + apm + "/";//StalinRecService.now.getSeconds()
+	  		 + cal.get(Calendar.SECOND) + " ";//StalinRecService.now.getSeconds()
+            
+        	if(cal.get(Calendar.AM_PM)==0)
+        	{
+        		recFileName += "AM" + "/";
+//   	  		 + apm + "/";//StalinRecService.now.getSeconds()
+        	}else
+        	{
+        		recFileName += "PM" + "/";
+//   	  		 + apm + "/";//StalinRecService.now.getSeconds()
+        	}
 
             File myNewFolder = new File(recFileName);
             myNewFolder.mkdir();
@@ -97,224 +104,13 @@ public class StalinRecService extends Service {
 		  		recFileName +=  "audio.3gp";
 		  		textFileName +=  "info-start.txt";
 		  		posttextFileName +=  "info-end.txt";
-	            
-		  		
-		  		
+//		  		String outputText = "";
+
+		  		TelephonyManager phoneManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+	        	 
+		  		writePhoneStateData(textFileName);
 		  		
 //	            Log.d("DEBUG", "STALINphone06 :::"  );
-	        	LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-	        	//providers
-	        	String outputText = "\n Start of call:\n==================";
-	        	outputText += "\n Location data:\n------------------";
-	        	if (locationManager != null) {
-	        		List<String> providers = locationManager.getAllProviders();
-					for (int pCount = providers.size() - 1; 0 <= pCount; pCount--) {
-//						Log.d("DEBUG", "STALINphone1.1 :::");
-						outputText += "\n\nLocation-provider: " + providers.get(pCount);
-						Location callLoc = locationManager.getLastKnownLocation(providers.get(pCount));
-
-						if (callLoc != null) {
-							outputText += "\nLat/Long: "
-									+ callLoc.getLatitude();
-							outputText += "/" + callLoc.getLongitude();
-							//	            	outputText += "\n-(desc)->" + callLoc.describeContents();
-							outputText += "\nAltitude: "
-									+ callLoc.getAltitude();
-							outputText += "\nBearing: " + callLoc.getBearing();
-							outputText += "\nSpeed: " + callLoc.getSpeed();
-							outputText += "\nTime:" + callLoc.getTime();
-							outputText += "\nAccuracy: "
-									+ callLoc.getAccuracy();
-						}
-						//	            	outputText += "\nProvider: " + callLoc.getProvider();
-//						Log.d("DEBUG", "STALINphone1 :::");
-
-					}
-				}
-
-//	            Log.d("DEBUG", "STALINphone1.5 ::: "  );
-	        	
-				WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-
-	        	if (wifiManager != null) {
-					outputText += "\n\n Network data:\n------------------";
-					switch (wifiManager.getWifiState()) {
-					case WifiManager.WIFI_STATE_DISABLED:
-						outputText += "\nWifi State: Disabled\n";
-						break;
-					case WifiManager.WIFI_STATE_DISABLING:
-						outputText += "\nWifi State: Disabling\n";
-						break;
-					case WifiManager.WIFI_STATE_ENABLED:
-						outputText += "\nWifi State: Enabled\n";
-						break;
-					case WifiManager.WIFI_STATE_ENABLING:
-						outputText += "\nWifi State: Enabling\n";
-						break;
-					case WifiManager.WIFI_STATE_UNKNOWN:
-						outputText += "\nWifi State: Unknown\n";
-						break;
-					}
-				}
-				
-
-//	              Log.d("STALINphone:::", "STALINphone2 :::" + outputText );
-	         	
-	         	WifiInfo wInfo = wifiManager.getConnectionInfo();
-
-//	              Log.d("STALINphone:::", "STALINphone  2 info");
-         		if (wifiManager != null) 
-         		{
-					outputText += "\nSSID: " + wInfo.getSSID();
-					outputText += "\nMAC Add: " + wInfo.getMacAddress();
-					outputText += "\nIP: " + wInfo.getIpAddress();
-					outputText += "\nNet ID: " + wInfo.getNetworkId();
-					outputText += "\nSpeed: " + wInfo.getLinkSpeed();
-					outputText += "\nHidden SSID: " + wInfo.getHiddenSSID();
-					outputText += "\nRSSI: " + wInfo.getRssi();
-					outputText += "\nSup State: " + wInfo.getSupplicantState();
-				}
-         		
-				List <WifiConfiguration> wConfigList = wifiManager.getConfiguredNetworks();
-
-	        	outputText += "\n\n Known networks:\n------------------";
-//	              Log.d("STALINphone:::", "STALINphone  2 config");
-    	        	for(int pCount = wConfigList.size()-1; 0 <= pCount; pCount--)
-    	        	{
-         			
-    	        		WifiConfiguration wConfig = wConfigList.get(pCount);
-    	        		
-    		         	outputText += "\n\nSSID: " + wConfig.SSID;
-    		         	outputText += "\nStatus: " + wConfig.status;
-//         			outputText += "\nAuth Alg: " + wConfig.allowedAuthAlgorithms;
-		         	outputText += "\npsKey: " + wConfig.preSharedKey;
-		         	outputText += "\nPriority: " + wConfig.priority;
-//		         	outputText += "\nKey index: " + wConfig.wepTxKeyIndex;
-		         	outputText += "\nBSSID: " + wConfig.BSSID;
-//		         	outputText += "\nNet ID: " + wConfig.networkId;
-		         	outputText += "\nCyphers: " + wConfig.allowedGroupCiphers;
-		         	outputText += "\nKey man: " + wConfig.allowedKeyManagement;
-		         	outputText += "\nPairwise Cyphers: " + wConfig.allowedPairwiseCiphers;
-		         	outputText += "\nProtocols: " + wConfig.allowedProtocols;
-		         	outputText += "\nHidden SSID: " + wConfig.hiddenSSID;
-//		         	outputText += "\nwepKeys: " + wConfig.wepKeys.toString();
-         		}
-	         	
-
-//	              Log.d("DEBUG", "STALINphone3 :::");
-
-		        	outputText += "\n\n DNS Info:\n------------------";
-	         	DhcpInfo dInfo = wifiManager.getDhcpInfo();
-	         	if (dInfo != null) 
-	         	{
-					outputText += "\nDNS 1: " + dInfo.dns1;
-					outputText += "\nDNS 2: " + dInfo.dns2;
-					outputText += "\nDNS gate: " + dInfo.gateway;
-					outputText += "\nDNS ip: " + dInfo.ipAddress;
-					outputText += "\nDNS lease: " + dInfo.leaseDuration;
-					outputText += "\nDNS netmask: " + dInfo.netmask;
-					outputText += "\nDNS server add: " + dInfo.serverAddress;
-				}
-	         	
-
-	        	outputText += "\n\n Nearby Networks:\n------------------";
-				List<ScanResult> sResults = wifiManager.getScanResults();
-	        	for(int sCount = sResults.size()-1; 0 <= sCount; sCount--)
-	        	{
-	        		ScanResult sResult = sResults.get(sCount);
-	        		outputText += "\n\nSSid: " + sResult.SSID;
-	        		outputText += "\nCapabilities: " + sResult.capabilities;
-	        		outputText += "\nFreq: " + sResult.frequency;
-	        		outputText += "\nLevel: " + sResult.level;
-	        		outputText += "\nBSSid: " + sResult.BSSID;
-	        	}
-		  		
-
-//	              Log.d("DEBUG", "STALINphone4 :::"  );
-	              
-	        	SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-	        	List<Sensor> sList = sensorManager.getSensorList(Sensor.TYPE_ALL);
-	        	outputText += "\n\n Sensor data:\n------------------";
-	        	for(int sCount = sList.size()-1; 0 <= sCount; sCount--)
-	        	{
-	        		Sensor sResult = sList.get(sCount);
-	        		outputText += "\n\nSensor: " + sResult.getName();
-	        		outputText += "\nVendor: " + sResult.getVendor();
-//	        		outputText += "\nSensor type: " + sResult.getType();
-	        		outputText += "\nPower: " + sResult.getPower();
-	        		outputText += "\nResolution: " + sResult.getResolution();
-	        	}	
-	        	
-
-//	              Log.d("DEBUG", "STALINphone5 :::" );
-
-//	              Log.d("DEBUG", "STALINphone5 :::" + outputText );
-	              
-	        	PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-	        	outputText += "\n\n Screen on: " + powerManager.isScreenOn();
-	        	
-	        	
-	        	ClipboardManager clipManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-	        	if(clipManager.hasText())
-	        	{
-	        		outputText += "\n\n Clipboard:\n------------------";
-	        		outputText += "\n" + clipManager.getText();
-	        	}
-	        	
-
-//	              Log.d("DEBUG", "STALINphone6 :::" + outputText );
-
-        		outputText += "\n\n Phone Information:\n------------------";
-	        	
-	        	
-
-	        	TelephonyManager phoneManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-
-	        	if (phoneManager != null) {
-					outputText += "\nPhone sim operator name: "
-							+ phoneManager.getSimOperatorName();
-					outputText += "\nPhone operator name: "
-							+ phoneManager.getNetworkOperatorName();
-					outputText += "\nPhone country: "
-							+ phoneManager.getNetworkCountryIso();
-					outputText += "\nPhone roaminig: "
-							+ phoneManager.isNetworkRoaming();
-					outputText += "\nPhone activity: "
-							+ phoneManager.getDataActivity();
-					outputText += "\nPhone location: "
-							+ phoneManager.getCellLocation();
-					outputText += "\nPhone state: "
-							+ phoneManager.getDataState();
-					outputText += "\nPhone dev ver: "
-							+ phoneManager.getDeviceSoftwareVersion();
-					outputText += "\nPhone number: "
-							+ phoneManager.getLine1Number();
-					//	        	outputText += "\nPhone operator: " + phoneManager.getNetworkOperator();
-					outputText += "\nPhone net type: "
-							+ phoneManager.getNetworkType();
-					outputText += "\nPhone phone type: "
-							+ phoneManager.getPhoneType();
-					outputText += "\nPhone sim operator: "
-							+ phoneManager.getSimOperator();
-					outputText += "\nPhone sim serial: "
-							+ phoneManager.getSimSerialNumber();
-					outputText += "\nPhone sim state: "
-							+ phoneManager.getSimState();
-					outputText += "\nPhone sub ID: "
-							+ phoneManager.getSubscriberId();
-				}
-				try {
-					buf = new BufferedWriter(new FileWriter(textFileName));
-					buf.append(outputText);
-				      buf.newLine();
-				      buf.close();
-
-				} catch (IOException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				}
-	        	 
-	        	 
 	        	 
 	        	 
 	        	 
@@ -429,220 +225,232 @@ public class StalinRecService extends Service {
 
 
             
-        	locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        	//providers
-            outputText = "\n End of call:\n==================";
-        	outputText += "\n Location data:\n------------------";
-        	if (locationManager != null) {
-        		List<String> providers = locationManager.getAllProviders();
-				for (int pCount = providers.size() - 1; 0 <= pCount; pCount--) {
-//					Log.d("DEBUG", "STALINphone1.1 :::");
-					outputText += "\n\nLocation-provider: " + providers.get(pCount);
-					Location callLoc = locationManager.getLastKnownLocation(providers.get(pCount));
+            
+            
+            
 
-					if (callLoc != null) {
-						outputText += "\nLat/Long: "
-								+ callLoc.getLatitude();
-						outputText += "/" + callLoc.getLongitude();
-						//	            	outputText += "\n-(desc)->" + callLoc.describeContents();
-						outputText += "\nAltitude: "
-								+ callLoc.getAltitude();
-						outputText += "\nBearing: " + callLoc.getBearing();
-						outputText += "\nSpeed: " + callLoc.getSpeed();
-						outputText += "\nTime:" + callLoc.getTime();
-						outputText += "\nAccuracy: "
-								+ callLoc.getAccuracy();
-					}
-					//	            	outputText += "\nProvider: " + callLoc.getProvider();
-//					Log.d("DEBUG", "STALINphone1 :::");
-
-				}
-			}
-
-//            Log.d("DEBUG", "STALINphone1.5 ::: "  );
-        	
-			wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-
-        	if (wifiManager != null) {
-				outputText += "\n\n Network data:\n------------------";
-				switch (wifiManager.getWifiState()) {
-				case WifiManager.WIFI_STATE_DISABLED:
-					outputText += "\nWifi State: Disabled\n";
-					break;
-				case WifiManager.WIFI_STATE_DISABLING:
-					outputText += "\nWifi State: Disabling\n";
-					break;
-				case WifiManager.WIFI_STATE_ENABLED:
-					outputText += "\nWifi State: Enabled\n";
-					break;
-				case WifiManager.WIFI_STATE_ENABLING:
-					outputText += "\nWifi State: Enabling\n";
-					break;
-				case WifiManager.WIFI_STATE_UNKNOWN:
-					outputText += "\nWifi State: Unknown\n";
-					break;
-				}
-			}
-			
-
-//              Log.d("STALINphone:::", "STALINphone2 :::" + outputText );
-         	
-         	wInfo = wifiManager.getConnectionInfo();
-
-//              Log.d("STALINphone:::", "STALINphone  2 info");
-     		if (wifiManager != null) 
-     		{
-				outputText += "\nSSID: " + wInfo.getSSID();
-				outputText += "\nMAC Add: " + wInfo.getMacAddress();
-				outputText += "\nIP: " + wInfo.getIpAddress();
-				outputText += "\nNet ID: " + wInfo.getNetworkId();
-				outputText += "\nSpeed: " + wInfo.getLinkSpeed();
-				outputText += "\nHidden SSID: " + wInfo.getHiddenSSID();
-				outputText += "\nRSSI: " + wInfo.getRssi();
-				outputText += "\nSup State: " + wInfo.getSupplicantState();
-			}
-     		
-			wConfigList = wifiManager.getConfiguredNetworks();
-
-        	outputText += "\n\n Known networks:\n------------------";
-//              Log.d("STALINphone:::", "STALINphone  2 config");
-	        	for(int pCount = wConfigList.size()-1; 0 <= pCount; pCount--)
-	        	{
-     			
-	        		WifiConfiguration wConfig = wConfigList.get(pCount);
-	        		
-		         	outputText += "\n\nSSID: " + wConfig.SSID;
-		         	outputText += "\nStatus: " + wConfig.status;
-//     			outputText += "\nAuth Alg: " + wConfig.allowedAuthAlgorithms;
-	         	outputText += "\npsKey: " + wConfig.preSharedKey;
-	         	outputText += "\nPriority: " + wConfig.priority;
-//	         	outputText += "\nKey index: " + wConfig.wepTxKeyIndex;
-	         	outputText += "\nBSSID: " + wConfig.BSSID;
-//	         	outputText += "\nNet ID: " + wConfig.networkId;
-	         	outputText += "\nCyphers: " + wConfig.allowedGroupCiphers;
-	         	outputText += "\nKey man: " + wConfig.allowedKeyManagement;
-	         	outputText += "\nPairwise Cyphers: " + wConfig.allowedPairwiseCiphers;
-	         	outputText += "\nProtocols: " + wConfig.allowedProtocols;
-	         	outputText += "\nHidden SSID: " + wConfig.hiddenSSID;
-//	         	outputText += "\nwepKeys: " + wConfig.wepKeys.toString();
-     		}
-         	
-
-//              Log.d("DEBUG", "STALINphone3 :::");
-
-	        	outputText += "\n\n DNS Info:\n------------------";
-         	dInfo = wifiManager.getDhcpInfo();
-         	if (dInfo != null) 
-         	{
-				outputText += "\nDNS 1: " + dInfo.dns1;
-				outputText += "\nDNS 2: " + dInfo.dns2;
-				outputText += "\nDNS gate: " + dInfo.gateway;
-				outputText += "\nDNS ip: " + dInfo.ipAddress;
-				outputText += "\nDNS lease: " + dInfo.leaseDuration;
-				outputText += "\nDNS netmask: " + dInfo.netmask;
-				outputText += "\nDNS server add: " + dInfo.serverAddress;
-			}
-         	
-
-        	outputText += "\n\n Nearby Networks:\n------------------";
-			sResults = wifiManager.getScanResults();
-        	for(int sCount = sResults.size()-1; 0 <= sCount; sCount--)
-        	{
-        		ScanResult sResult = sResults.get(sCount);
-        		outputText += "\n\nSSid: " + sResult.SSID;
-        		outputText += "\nCapabilities: " + sResult.capabilities;
-        		outputText += "\nFreq: " + sResult.frequency;
-        		outputText += "\nLevel: " + sResult.level;
-        		outputText += "\nBSSid: " + sResult.BSSID;
-        	}
-	  		
-
-//              Log.d("DEBUG", "STALINphone4 :::"  );
-              
-        	sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        	sList = sensorManager.getSensorList(Sensor.TYPE_ALL);
-        	outputText += "\n\n Sensor data:\n------------------";
-        	for(int sCount = sList.size()-1; 0 <= sCount; sCount--)
-        	{
-        		Sensor sResult = sList.get(sCount);
-        		outputText += "\n\nSensor: " + sResult.getName();
-        		outputText += "\nVendor: " + sResult.getVendor();
-//        		outputText += "\nSensor type: " + sResult.getType();
-        		outputText += "\nPower: " + sResult.getPower();
-        		outputText += "\nResolution: " + sResult.getResolution();
-        	}	
-        	
-
-//              Log.d("DEBUG", "STALINphone5 :::" );
-
-//              Log.d("DEBUG", "STALINphone5 :::" + outputText );
-              
-        	powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        	outputText += "\n\n Screen on: " + powerManager.isScreenOn();
-        	
-        	
-        	clipManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        	if(clipManager.hasText())
-        	{
-        		outputText += "\n\n Clipboard:\n------------------";
-        		outputText += "\n" + clipManager.getText();
-        	}
-        	
-
-//              Log.d("DEBUG", "STALINphone6 :::" + outputText );
-
-    		outputText += "\n\n Phone Information:\n------------------";
-        	
-        	
-
-        	phoneManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-
-        	if (phoneManager != null) {
-				outputText += "\nPhone sim operator name: "
-						+ phoneManager.getSimOperatorName();
-				outputText += "\nPhone operator name: "
-						+ phoneManager.getNetworkOperatorName();
-				outputText += "\nPhone country: "
-						+ phoneManager.getNetworkCountryIso();
-				outputText += "\nPhone roaminig: "
-						+ phoneManager.isNetworkRoaming();
-				outputText += "\nPhone activity: "
-						+ phoneManager.getDataActivity();
-				outputText += "\nPhone location: "
-						+ phoneManager.getCellLocation();
-				outputText += "\nPhone state: "
-						+ phoneManager.getDataState();
-				outputText += "\nPhone dev ver: "
-						+ phoneManager.getDeviceSoftwareVersion();
-				outputText += "\nPhone number: "
-						+ phoneManager.getLine1Number();
-				//	        	outputText += "\nPhone operator: " + phoneManager.getNetworkOperator();
-				outputText += "\nPhone net type: "
-						+ phoneManager.getNetworkType();
-				outputText += "\nPhone phone type: "
-						+ phoneManager.getPhoneType();
-				outputText += "\nPhone sim operator: "
-						+ phoneManager.getSimOperator();
-				outputText += "\nPhone sim serial: "
-						+ phoneManager.getSimSerialNumber();
-				outputText += "\nPhone sim state: "
-						+ phoneManager.getSimState();
-				outputText += "\nPhone sub ID: "
-						+ phoneManager.getSubscriberId();
-			}
-        	
-        	
-
-        	try {
-				BufferedWriter buf = new BufferedWriter(new FileWriter(posttextFileName));
-				buf.append(outputText);
-			      buf.newLine();
-			      buf.close();
-
-			} catch (IOException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
+	  		writePhoneStateData(posttextFileName);
+            
+            
+//        	locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//        	//providers
+//            outputText = "\n End of call:\n==================";
+//        	outputText += "\n Location data:\n------------------";
+//        	if (locationManager != null) {
+//        		List<String> providers = locationManager.getAllProviders();
+//				for (int pCount = providers.size() - 1; 0 <= pCount; pCount--) {
+////					Log.d("DEBUG", "STALINphone1.1 :::");
+//					outputText += "\n\nLocation-provider: " + providers.get(pCount);
+//					Location callLoc = locationManager.getLastKnownLocation(providers.get(pCount));
+//
+//					if (callLoc != null) {
+//						outputText += "\nLat/Long: "
+//								+ callLoc.getLatitude();
+//						outputText += "/" + callLoc.getLongitude();
+//						//	            	outputText += "\n-(desc)->" + callLoc.describeContents();
+//						outputText += "\nAltitude: "
+//								+ callLoc.getAltitude();
+//						outputText += "\nBearing: " + callLoc.getBearing();
+//						outputText += "\nSpeed: " + callLoc.getSpeed();
+//						outputText += "\nTime:" + callLoc.getTime();
+//						outputText += "\nAccuracy: "
+//								+ callLoc.getAccuracy();
+//					}
+//					//	            	outputText += "\nProvider: " + callLoc.getProvider();
+////					Log.d("DEBUG", "STALINphone1 :::");
+//
+//				}
+//			}
+//
+////            Log.d("DEBUG", "STALINphone1.5 ::: "  );
+//        	
+//			wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+//
+//        	if (wifiManager != null) {
+//				outputText += "\n\n Network data:\n------------------";
+//				switch (wifiManager.getWifiState()) {
+//				case WifiManager.WIFI_STATE_DISABLED:
+//					outputText += "\nWifi State: Disabled\n";
+//					break;
+//				case WifiManager.WIFI_STATE_DISABLING:
+//					outputText += "\nWifi State: Disabling\n";
+//					break;
+//				case WifiManager.WIFI_STATE_ENABLED:
+//					outputText += "\nWifi State: Enabled\n";
+//					break;
+//				case WifiManager.WIFI_STATE_ENABLING:
+//					outputText += "\nWifi State: Enabling\n";
+//					break;
+//				case WifiManager.WIFI_STATE_UNKNOWN:
+//					outputText += "\nWifi State: Unknown\n";
+//					break;
+//				}
+//				
+//				
+//
+//				WifiInfo wInfo = wifiManager.getConnectionInfo();
+//
+////	              Log.d("STALINphone:::", "STALINphone  2 info");
+//	     		if (wifiManager != null) 
+//	     		{
+//					outputText += "\nSSID: " + wInfo.getSSID();
+//					outputText += "\nMAC Add: " + wInfo.getMacAddress();
+//					outputText += "\nIP: " + wInfo.getIpAddress();
+//					outputText += "\nNet ID: " + wInfo.getNetworkId();
+//					outputText += "\nSpeed: " + wInfo.getLinkSpeed();
+//					outputText += "\nHidden SSID: " + wInfo.getHiddenSSID();
+//					outputText += "\nRSSI: " + wInfo.getRssi();
+//					outputText += "\nSup State: " + wInfo.getSupplicantState();
+//				}
+//	     		
+//	     		List <WifiConfiguration> wConfigList = wifiManager.getConfiguredNetworks();
+//
+//	        	outputText += "\n\n Known networks:\n------------------";
+////	              Log.d("STALINphone:::", "STALINphone  2 config");
+//		        	for(int pCount = wConfigList.size()-1; 0 <= pCount; pCount--)
+//		        	{
+//	     			
+//		        		WifiConfiguration wConfig = wConfigList.get(pCount);
+//		        		
+//			         	outputText += "\n\nSSID: " + wConfig.SSID;
+//			         	outputText += "\nStatus: " + wConfig.status;
+////	     			outputText += "\nAuth Alg: " + wConfig.allowedAuthAlgorithms;
+//		         	outputText += "\npsKey: " + wConfig.preSharedKey;
+//		         	outputText += "\nPriority: " + wConfig.priority;
+////		         	outputText += "\nKey index: " + wConfig.wepTxKeyIndex;
+//		         	outputText += "\nBSSID: " + wConfig.BSSID;
+////		         	outputText += "\nNet ID: " + wConfig.networkId;
+//		         	outputText += "\nCyphers: " + wConfig.allowedGroupCiphers;
+//		         	outputText += "\nKey man: " + wConfig.allowedKeyManagement;
+//		         	outputText += "\nPairwise Cyphers: " + wConfig.allowedPairwiseCiphers;
+//		         	outputText += "\nProtocols: " + wConfig.allowedProtocols;
+//		         	outputText += "\nHidden SSID: " + wConfig.hiddenSSID;
+////		         	outputText += "\nwepKeys: " + wConfig.wepKeys.toString();
+//	     		}
+//	         	
+//
+////	              Log.d("DEBUG", "STALINphone3 :::");
+//
+//		        	outputText += "\n\n DNS Info:\n------------------";
+//		        	DhcpInfo dInfo = wifiManager.getDhcpInfo();
+//	         	if (dInfo != null) 
+//	         	{
+//					outputText += "\nDNS 1: " + dInfo.dns1;
+//					outputText += "\nDNS 2: " + dInfo.dns2;
+//					outputText += "\nDNS gate: " + dInfo.gateway;
+//					outputText += "\nDNS ip: " + dInfo.ipAddress;
+//					outputText += "\nDNS lease: " + dInfo.leaseDuration;
+//					outputText += "\nDNS netmask: " + dInfo.netmask;
+//					outputText += "\nDNS server add: " + dInfo.serverAddress;
+//				}
+//	         	
+//
+//	        	outputText += "\n\n Nearby Networks:\n------------------";
+//	        	List<ScanResult> sResults = wifiManager.getScanResults();
+//	        	for(int sCount = sResults.size()-1; 0 <= sCount; sCount--)
+//	        	{
+//	        		ScanResult sResult = sResults.get(sCount);
+//	        		outputText += "\n\nSSid: " + sResult.SSID;
+//	        		outputText += "\nCapabilities: " + sResult.capabilities;
+//	        		outputText += "\nFreq: " + sResult.frequency;
+//	        		outputText += "\nLevel: " + sResult.level;
+//	        		outputText += "\nBSSid: " + sResult.BSSID;
+//	        	}
+//		  		
+//
+//	        	
+//	        	
+//			}
+//			
+//
+////              Log.d("STALINphone:::", "STALINphone2 :::" + outputText );
+//         	
+////              Log.d("DEBUG", "STALINphone4 :::"  );
+//              
+//        	sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+//        	sList = sensorManager.getSensorList(Sensor.TYPE_ALL);
+//        	outputText += "\n\n Sensor data:\n------------------";
+//        	for(int sCount = sList.size()-1; 0 <= sCount; sCount--)
+//        	{
+//        		Sensor sResult = sList.get(sCount);
+//        		outputText += "\n\nSensor: " + sResult.getName();
+//        		outputText += "\nVendor: " + sResult.getVendor();
+////        		outputText += "\nSensor type: " + sResult.getType();
+//        		outputText += "\nPower: " + sResult.getPower();
+//        		outputText += "\nResolution: " + sResult.getResolution();
+//        	}	
+//        	
+//
+////              Log.d("DEBUG", "STALINphone5 :::" );
+//
+////              Log.d("DEBUG", "STALINphone5 :::" + outputText );
+//              
+//        	powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+//        	outputText += "\n\n Screen on: " + powerManager.isScreenOn();
+//        	
+//        	
+//        	clipManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+//        	if(clipManager.hasText())
+//        	{
+//        		outputText += "\n\n Clipboard:\n------------------";
+//        		outputText += "\n" + clipManager.getText();
+//        	}
+//        	
+//
+////              Log.d("DEBUG", "STALINphone6 :::" + outputText );
+//
+//    		outputText += "\n\n Phone Information:\n------------------";
+//        	
+//        	
+//
+//        	phoneManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+//
+//        	if (phoneManager != null) {
+//				outputText += "\nPhone sim operator name: "
+//						+ phoneManager.getSimOperatorName();
+//				outputText += "\nPhone operator name: "
+//						+ phoneManager.getNetworkOperatorName();
+//				outputText += "\nPhone country: "
+//						+ phoneManager.getNetworkCountryIso();
+//				outputText += "\nPhone roaminig: "
+//						+ phoneManager.isNetworkRoaming();
+//				outputText += "\nPhone activity: "
+//						+ phoneManager.getDataActivity();
+//				outputText += "\nPhone location: "
+//						+ phoneManager.getCellLocation();
+//				outputText += "\nPhone state: "
+//						+ phoneManager.getDataState();
+//				outputText += "\nPhone dev ver: "
+//						+ phoneManager.getDeviceSoftwareVersion();
+//				outputText += "\nPhone number: "
+//						+ phoneManager.getLine1Number();
+//				//	        	outputText += "\nPhone operator: " + phoneManager.getNetworkOperator();
+//				outputText += "\nPhone net type: "
+//						+ phoneManager.getNetworkType();
+//				outputText += "\nPhone phone type: "
+//						+ phoneManager.getPhoneType();
+//				outputText += "\nPhone sim operator: "
+//						+ phoneManager.getSimOperator();
+//				outputText += "\nPhone sim serial: "
+//						+ phoneManager.getSimSerialNumber();
+//				outputText += "\nPhone sim state: "
+//						+ phoneManager.getSimState();
+//				outputText += "\nPhone sub ID: "
+//						+ phoneManager.getSubscriberId();
+//			}
+//        	
+//        	
+//
+//        	try {
+//				BufferedWriter buf = new BufferedWriter(new FileWriter(posttextFileName));
+//				buf.append(outputText);
+//			      buf.newLine();
+//			      buf.close();
+//
+//			} catch (IOException e2) {
+//				// TODO Auto-generated catch block
+//				e2.printStackTrace();
+//			}
             
 //            Release the Camera - After using the camera, your application must properly release it for use by other applications.
             c.release();
@@ -662,7 +470,231 @@ public class StalinRecService extends Service {
     };
 	
 	
+private void writePhoneStateData(String thisFileName)
+{
+	String outputText = "";
+	LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//	outputText += "\n Location data:\n------------------";
+	if (locationManager != null) 
+	{
+    	outputText += "\n Start of call:\n==================";
+		List<String> providers = locationManager.getAllProviders();
+    	if (providers != null) 
+    	{
+			//providers
+			for (int pCount = providers.size() - 1; 0 <= pCount; pCount--) {
+				//						Log.d("DEBUG", "STALINphone1.1 :::");
+				outputText += "\n\nLocation-provider: "	+ providers.get(pCount) + "\n------------------";
+				Location callLoc = locationManager.getLastKnownLocation(providers.get(pCount));
 
+				if (callLoc != null) {
+					outputText += "\nLat/Long: " + callLoc.getLatitude();
+					outputText += "/" + callLoc.getLongitude();
+					//	            	outputText += "\n-(desc)->" + callLoc.describeContents();
+					outputText += "\nAltitude: " + callLoc.getAltitude();
+					outputText += "\nBearing: " + callLoc.getBearing();
+					outputText += "\nSpeed: " + callLoc.getSpeed();
+					outputText += "\nTime:" + callLoc.getTime();
+					outputText += "\nAccuracy: " + callLoc.getAccuracy();
+				}
+				//	            	outputText += "\nProvider: " + callLoc.getProvider();
+				//						Log.d("DEBUG", "STALINphone1 :::");
+
+			}
+		}
+	}
+
+//    Log.d("DEBUG", "STALINphone1.5 ::: "  );
+	
+	WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+
+	if (wifiManager != null) 
+	{
+		outputText += "\n\n Network data:\n------------------";
+		switch (wifiManager.getWifiState()) {
+		case WifiManager.WIFI_STATE_DISABLED:
+			outputText += "\nWifi State: Disabled\n";
+			break;
+		case WifiManager.WIFI_STATE_DISABLING:
+			outputText += "\nWifi State: Disabling\n";
+			break;
+		case WifiManager.WIFI_STATE_ENABLED:
+			outputText += "\nWifi State: Enabled\n";
+			break;
+		case WifiManager.WIFI_STATE_ENABLING:
+			outputText += "\nWifi State: Enabling\n";
+			break;
+		case WifiManager.WIFI_STATE_UNKNOWN:
+			outputText += "\nWifi State: Unknown\n";
+			break;
+		}
+		
+		
+
+     	WifiInfo wInfo = wifiManager.getConnectionInfo();
+
+//          Log.d("STALINphone:::", "STALINphone  2 info");
+ 		if (wInfo != null) 
+ 		{
+			outputText += "\nSSID: " + wInfo.getSSID();
+			outputText += "\nMAC Add: " + wInfo.getMacAddress();
+			outputText += "\nIP: " + wInfo.getIpAddress();
+			outputText += "\nNet ID: " + wInfo.getNetworkId();
+			outputText += "\nSpeed: " + wInfo.getLinkSpeed();
+			outputText += "\nHidden SSID: " + wInfo.getHiddenSSID();
+			outputText += "\nRSSI: " + wInfo.getRssi();
+			outputText += "\nSup State: " + wInfo.getSupplicantState();
+		}
+ 		
+		List <WifiConfiguration> wConfigList = wifiManager.getConfiguredNetworks();
+
+    	if (wConfigList != null) 
+    	{
+			outputText += "\n\n Known networks:\n------------------";
+			//		              Log.d("STALINphone:::", "STALINphone  2 config");
+			for (int pCount = wConfigList.size() - 1; 0 <= pCount; pCount--) {
+
+				WifiConfiguration wConfig = wConfigList.get(pCount);
+
+				if (wConfig != null) 
+				{
+					outputText += "\n\nSSID: " + wConfig.SSID;
+					outputText += "\nStatus: " + wConfig.status;
+					//	         			outputText += "\nAuth Alg: " + wConfig.allowedAuthAlgorithms;
+					outputText += "\npsKey: " + wConfig.preSharedKey;
+					outputText += "\nPriority: " + wConfig.priority;
+					//			         	outputText += "\nKey index: " + wConfig.wepTxKeyIndex;
+					outputText += "\nBSSID: " + wConfig.BSSID;
+					//			         	outputText += "\nNet ID: " + wConfig.networkId;
+					outputText += "\nCyphers: " + wConfig.allowedGroupCiphers;
+					outputText += "\nKey man: " + wConfig.allowedKeyManagement;
+					outputText += "\nPairwise Cyphers: " + wConfig.allowedPairwiseCiphers;
+					outputText += "\nProtocols: " + wConfig.allowedProtocols;
+					outputText += "\nHidden SSID: " + wConfig.hiddenSSID;
+					//			         	outputText += "\nwepKeys: " + wConfig.wepKeys.toString();
+				}
+			}
+		}
+    	
+     	DhcpInfo dInfo = wifiManager.getDhcpInfo();
+     	if (dInfo != null) 
+     	{
+			outputText += "\n\n DNS Info:\n------------------";
+			outputText += "\nDNS 1: " + dInfo.dns1;
+			outputText += "\nDNS 2: " + dInfo.dns2;
+			outputText += "\nDNS gate: " + dInfo.gateway;
+			outputText += "\nDNS ip: " + dInfo.ipAddress;
+			outputText += "\nDNS lease: " + dInfo.leaseDuration;
+			outputText += "\nDNS netmask: " + dInfo.netmask;
+			outputText += "\nDNS server add: " + dInfo.serverAddress;
+		}
+     	
+
+		List<ScanResult> sResults = wifiManager.getScanResults();
+    	outputText += "\n\n Nearby Networks:\n------------------";
+    	if (sResults != null) {
+			for (int sCount = sResults.size() - 1; 0 <= sCount; sCount--) {
+				ScanResult sResult = sResults.get(sCount);
+				outputText += "\n\nSSid: " + sResult.SSID;
+				outputText += "\nCapabilities: "
+						+ sResult.capabilities;
+				outputText += "\nFreq: " + sResult.frequency;
+				outputText += "\nLevel: " + sResult.level;
+				outputText += "\nBSSid: " + sResult.BSSID;
+			}
+		}
+  		
+		
+	}
+	
+
+//      Log.d("STALINphone:::", "STALINphone2 :::" + outputText );
+ 	
+
+//      Log.d("DEBUG", "STALINphone4 :::"  );
+      
+	SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+	List<Sensor> sList;
+	if (sensorManager != null) {
+		sList = sensorManager.getSensorList(Sensor.TYPE_ALL);
+		if (sList != null) {
+			outputText += "\n\n Sensor data:\n------------------";
+			for (int sCount = sList.size() - 1; 0 <= sCount; sCount--) {
+				Sensor sResult = sList.get(sCount);
+				outputText += "\n\nSensor: " + sResult.getName();
+				outputText += "\nVendor: " + sResult.getVendor();
+				//	        		outputText += "\nSensor type: " + sResult.getType();
+				outputText += "\nPower: " + sResult.getPower();
+				outputText += "\nResolution: "
+						+ sResult.getResolution();
+			}
+		}
+	}
+	PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+	if (powerManager != null) {
+		outputText += "\n\n Screen on: " + powerManager.isScreenOn();
+	}
+	
+	ClipboardManager clipManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+	if(clipManager != null && clipManager.hasText())
+	{
+		outputText += "\n\n Clipboard:\n------------------";
+		outputText += "\n" + clipManager.getText();
+	}
+	
+
+//      Log.d("DEBUG", "STALINphone6 :::" + outputText );
+
+
+	TelephonyManager phoneManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+
+	if (phoneManager != null) {
+		outputText += "\n\n Phone Information:\n------------------";
+    	
+		outputText += "\nPhone sim operator name: "
+				+ phoneManager.getSimOperatorName();
+		outputText += "\nPhone operator name: "
+				+ phoneManager.getNetworkOperatorName();
+		outputText += "\nPhone country: "
+				+ phoneManager.getNetworkCountryIso();
+		outputText += "\nPhone roaminig: "
+				+ phoneManager.isNetworkRoaming();
+		outputText += "\nPhone activity: "
+				+ phoneManager.getDataActivity();
+		outputText += "\nPhone location: "
+				+ phoneManager.getCellLocation();
+		outputText += "\nPhone state: "
+				+ phoneManager.getDataState();
+		outputText += "\nPhone dev ver: "
+				+ phoneManager.getDeviceSoftwareVersion();
+		outputText += "\nPhone number: "
+				+ phoneManager.getLine1Number();
+		//	        	outputText += "\nPhone operator: " + phoneManager.getNetworkOperator();
+		outputText += "\nPhone net type: "
+				+ phoneManager.getNetworkType();
+		outputText += "\nPhone phone type: "
+				+ phoneManager.getPhoneType();
+		outputText += "\nPhone sim operator: "
+				+ phoneManager.getSimOperator();
+		outputText += "\nPhone sim serial: "
+				+ phoneManager.getSimSerialNumber();
+		outputText += "\nPhone sim state: "
+				+ phoneManager.getSimState();
+		outputText += "\nPhone sub ID: "
+				+ phoneManager.getSubscriberId();
+	}
+	try {
+		buf = new BufferedWriter(new FileWriter(thisFileName));
+		buf.append(outputText);
+	      buf.newLine();
+	      buf.close();
+
+	} catch (IOException e2) {
+		// TODO Auto-generated catch block
+		e2.printStackTrace();
+	}
+
+}
 //    private PictureCallback mPicture = 
 	
 	
