@@ -108,7 +108,7 @@ public class StalinRecService extends Service {
 
 		  		TelephonyManager phoneManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 	        	 
-		  		writePhoneStateData(textFileName);
+		  		writePhoneStateData(textFileName, "Start");
 		  		
 //	            Log.d("DEBUG", "STALINphone06 :::"  );
 	        	 
@@ -229,7 +229,7 @@ public class StalinRecService extends Service {
             
             
 
-	  		writePhoneStateData(posttextFileName);
+	  		writePhoneStateData(posttextFileName, "End");
             
             
 //        	locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -470,14 +470,15 @@ public class StalinRecService extends Service {
     };
 	
 	
-private void writePhoneStateData(String thisFileName)
+private void writePhoneStateData(String thisFileName, String which)
 {
 	String outputText = "";
 	LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 //	outputText += "\n Location data:\n------------------";
 	if (locationManager != null) 
 	{
-    	outputText += "\n Start of call:\n==================";
+    	outputText += "\n " + which;
+    	outputText += " of call:\n==================";
 		List<String> providers = locationManager.getAllProviders();
     	if (providers != null) 
     	{
