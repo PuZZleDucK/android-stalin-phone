@@ -11,14 +11,17 @@ import android.os.Parcel;
 import android.os.RemoteException;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
+import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.VideoView;
  
 public class StalinPhoneActivity extends Activity implements OnClickListener, RecognitionListener {
     
 	MediaPlayer mMediaPlayer;
 	Intent recognizerIntent;
+	public static VideoView videoView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,14 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
 //        findViewById(R.id.toggleButton1).setOnClickListener( (OnClickListener) this);
 //        Log.d("StalinPhone ::: ", "trans button set up");
 //icon is Stalin Jamming from uncyclopedia :] thanks sock puppet
+        
+        
+
+    	//manditory video preview
+        videoView = (VideoView) this.findViewById(R.id.videoView);
+        
+        
+        
     } 
 
 	@Override
