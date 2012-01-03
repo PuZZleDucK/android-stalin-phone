@@ -21,7 +21,7 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
     
 	MediaPlayer mMediaPlayer;
 	Intent recognizerIntent;
-	public static VideoView videoView;
+//	public static VideoView videoView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class StalinPhoneActivity extends Activity implements OnClickListener, Re
         
 
     	//manditory video preview
-        videoView = (VideoView) this.findViewById(R.id.videoView);
+//        videoView = (VideoView) this.findViewById(R.id.videoView);
         
         
         
