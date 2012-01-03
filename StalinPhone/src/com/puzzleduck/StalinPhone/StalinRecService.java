@@ -45,6 +45,7 @@ import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.RemoteViews;
 import android.widget.VideoView;
 
 public class StalinRecService extends Service {
@@ -52,13 +53,39 @@ public class StalinRecService extends Service {
 //    private static Date now;
     private File pictureFile;
     private BufferedWriter buf;
-    
+    Notification notification;
     @Override
     public void onCreate() {
+    	
+    	//create custom view with video surface
+    	RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.stalinvideonotification);
+
+    	contentView.setImageViewResource(R.id.videoView1, R.layout.stalinvideonotification);
+    	contentView.setTextViewText(R.id.title, "Custom notification");
+    	contentView.setTextViewText(R.id.text, "This is a custom layout");
+    	
+    	
+    	
+    	
+    	
+    	
+    	
 //    	Log.d("StalinPhone ::: ", "starting REC service...");
         mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        // show the icon in the status bar
-        showNotification();
+        //new vid notification 
+        notification = new Notification();
+        notification.contentView = contentView;	
+        
+        Intent notificationIntent = new Intent(this, StalinRecService.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        notification.contentIntent = contentIntent;
+        
+        mNM.notify(1, notification);
+ 
+        
+        
+        // show the icon in the status bar-old
+//        showNotification();
 
         
         // Start up the thread running the service.
@@ -106,7 +133,11 @@ public class StalinRecService extends Service {
             Context thisContext = getBaseContext();
             Log.d("DEBUG", "STALINphone-stalinCAM ::: context-name: " + thisContext.getApplicationInfo().name );
             Log.d("DEBUG", "STALINphone-stalinCAM ::: pre-get holder" );
-        	SurfaceHolder holder = new VideoView(thisContext).getHolder();
+
+//        	SurfaceHolder holder = new VideoView(thisContext).getHolder();
+        	SurfaceHolder holder = (SurfaceHolder) notification.contentView;//need to extend my own notification?!?!   damn
+//        	SurfaceHolder holder = notification.contentView.setImageViewResource(viewId, srcId);
+        	
             Log.d("DEBUG", "STALINphone-stalinCAM ::: get holder" );
         	StalinHandler handler = new StalinHandler();
             Log.d("DEBUG", "STALINphone-stalinCAM ::: get handler" );
