@@ -231,7 +231,7 @@ public class StalinRecService extends Service {
 //				e1.printStackTrace();
 //			}
 //
-//        	myAudioRecorder.start();
+//        	myAudioRecorder.start();  //crash reported at StalinRecService.java:144: java.lang.IllegalStateException - android.media.MediaRecorder.start
         	
         	
 //            Detect and Access Camera - Create code to check for the existence of cameras and request access.
