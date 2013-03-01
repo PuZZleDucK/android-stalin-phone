@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hello" />
+
+    <Button
+        android:id="@+id/start_stalin_trans_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stalin_button_start_trans" >
+    </Button>
+
+    <EditText
+        android:id="@+id/debugTranscription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.50"
+        android:editable="false"
+        android:inputType="none|textMultiLine"
+        android:text="@string/stalinPhoneText" >
+
+        <requestFocus />
+    </EditText>
+
+</LinearLayout>
